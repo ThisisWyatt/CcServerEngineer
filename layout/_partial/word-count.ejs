@@ -1,0 +1,18 @@
+<div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count"><%= wordcount(post.content) %></span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count"><%= min2read(post.content) >1 ? min2read(post.content)+" minutes" : min2read(post.content)+" minute"%> </span>
+        </span>
+    </span>
+</div>

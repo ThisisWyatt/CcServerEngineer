@@ -1,0 +1,70 @@
+# Menu
+menu:
+  Home: /
+  Archives: /archives
+  Gallery: /gallery
+  categories: /categories
+  Tags: /tags
+  About: /about
+  Links: /links
+rss: /atom.xml
+
+
+# Miscellaneous
+favicon: /favicon.ico
+brand: /images/hexo.svg
+
+# Ocean Video
+# Because I put videos in multiple formats on the same path, I just labeled the path here.
+ocean:
+  overlay: true
+  path: /images/ocean/
+  brand: /images/hexo-inverted.svg
+
+# Content
+excerpt_link: MORE >>
+
+# Tags
+show_count: true
+
+# Toc
+toc: true
+
+# fancybox
+fancybox: true
+
+# Gitalk
+gitalk:
+  enable: true # true
+  clientID: ac06055f7c49938795a3 # GitHub Application Client ID
+  clientSecret: 460a520458ca501d939291e4f049c621df50fe6c # Client Secret
+  repo: GitakRepository # Repository name
+  owner: ThisisWyatt # GitHub ID
+  admin: ThisisWyatt # GitHub ID
+
+# Valine
+valine:
+  enable: false # true
+  el: 'vcomments'
+  appId: 
+  appKey: 
+  notify: false
+  verify: true
+  avatar: 'mp'
+  pageSize: '10'
+  placeholder: '请输入...' 
+
+
+# 版权声明
+#在需要进行版权声明的文章的md文件头部，设置属性declare: true。
+#版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明
+declare:
+  declare_type: 2
+  licensee_url: https://creativecommons.org/licenses/by-nc-sa/4.0/        #当前应用的版权协议地址。
+  licensee_name: 'CC BY-NC-SA 4.0'                                        #版权协议的名称
+  licensee_alias: '知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议'       # alias别名
+  licensee_img: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png    #版权协议的Logo
+
+
+
+word_count: true
