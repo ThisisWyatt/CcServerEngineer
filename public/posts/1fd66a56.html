@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Java时间日期处理 |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-code/JavaSE/时间日期" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      Java时间日期处理
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">1.1k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">5 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/1fd66a56.html" class="article-date">
+  <time datetime="2020-05-06T16:07:10.000Z" itemprop="datePublished">2020-05-07</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+
+            
+            <p>在java.util包中提供了Date和Calendar两个类用来封装日期和时间有关的信息</p>
+<h2 id="1-Date类"><a href="#1-Date类" class="headerlink" title="1.Date类"></a>1.Date类</h2><p>在java中日期用代表<strong>毫微秒</strong>的一个厂整数镜像存储表示，也就是日期时间相对<strong>格林威治时间</strong>（GMT)1970年1月1日零点整数过去的毫微秒数。</p>
+<a id="more"></a>
+<h3 id="1-1-日期的构造方法如下："><a href="#1-1-日期的构造方法如下：" class="headerlink" title="1.1 日期的构造方法如下："></a>1.1 日期的构造方法如下：</h3><pre class=" language-java"><code class="language-java">    Date date<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//创建一个当前日期</span>
+    Date date<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">DateDate</span><span class="token punctuation">(</span><span class="token keyword">long</span> millisec<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//根据距离格林威时间的毫微秒数构造</span></code></pre>
+<h3 id="1-2常用方法"><a href="#1-2常用方法" class="headerlink" title="1.2常用方法"></a>1.2常用方法</h3><pre class=" language-java"><code class="language-java">    <span class="token keyword">boolean</span> <span class="token function">after</span><span class="token punctuation">(</span>Date date<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//如果调用Date对象包含或晚于指定的日期则返回true，否则，返回false。</span>
+    <span class="token keyword">boolean</span> <span class="token function">before</span><span class="token punctuation">(</span>Date date<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//如果调用Date对象包含或早于日期指定的日期返回true，否则，返回false。</span>
+    <span class="token keyword">int</span> <span class="token function">compareTo</span><span class="token punctuation">(</span>Date date<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//调用对象的值与日期比较。如果这两个值相等返回0。如果调用对象是早于日期返回一个负值。如果调用对象迟于日期返回正值。</span>
+    <span class="token keyword">long</span> <span class="token function">getTime</span><span class="token punctuation">(</span> <span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//返回自1970年1月1日起已经过的毫秒数。</span>
+    <span class="token keyword">void</span> <span class="token function">setTime</span><span class="token punctuation">(</span><span class="token keyword">long</span> time<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//设置所指定的时间，这表示从1970年1月1日从午夜的时间和日期以毫秒为单位经过的时间。</span>
+    String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//调用Date对象转换为字符串，并返回结果。</span></code></pre>
+<h3 id="1-3时间日期格式化"><a href="#1-3时间日期格式化" class="headerlink" title="1.3时间日期格式化"></a>1.3时间日期格式化</h3><table>
+<thead>
+<tr>
+<th>字符</th>
+<th>描述</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td>时代指示器</td>
+<td>AD</td>
+</tr>
+<tr>
+<td>y</td>
+<td>四位数年份</td>
+<td>2001</td>
+</tr>
+<tr>
+<td>M</td>
+<td>年中的月份</td>
+<td>July or 07</td>
+</tr>
+<tr>
+<td>d</td>
+<td>月份中日期</td>
+<td>10</td>
+</tr>
+<tr>
+<td>h</td>
+<td>时间 A.M./P.M.(1~12)</td>
+<td>12</td>
+</tr>
+<tr>
+<td>H</td>
+<td>天中的小时 (0~23)</td>
+<td>22</td>
+</tr>
+<tr>
+<td>m</td>
+<td>小时中的分钟</td>
+<td>30</td>
+</tr>
+<tr>
+<td>s</td>
+<td>分钟中的秒钟</td>
+<td>55</td>
+</tr>
+<tr>
+<td>S</td>
+<td>毫秒</td>
+<td>234</td>
+</tr>
+<tr>
+<td>E</td>
+<td>星期中的天</td>
+<td>Tuesday</td>
+</tr>
+<tr>
+<td>M</td>
+<td>年中的天</td>
+<td>July or 07</td>
+</tr>
+<tr>
+<td>D</td>
+<td>年中的月份</td>
+<td>360</td>
+</tr>
+<tr>
+<td>a</td>
+<td>A.M./P.M. 标记</td>
+<td>A.M./P.M. 标记</td>
+</tr>
+<tr>
+<td>w</td>
+<td>年中的星期</td>
+<td>40</td>
+</tr>
+<tr>
+<td>W</td>
+<td>月中的星期</td>
+<td>1</td>
+</tr>
+<tr>
+<td>k</td>
+<td>天中的小时(1~24)</td>
+<td>24</td>
+</tr>
+<tr>
+<td>K</td>
+<td>小时A.M./P.M. (0~11)</td>
+<td>10</td>
+</tr>
+<tr>
+<td>z</td>
+<td>时区</td>
+<td>东部标准时间</td>
+</tr>
+<tr>
+<td>‘</td>
+<td>脱离文本</td>
+<td>分隔符</td>
+</tr>
+<tr>
+<td>“</td>
+<td>单引号</td>
+<td>`</td>
+</tr>
+</tbody></table>
+<h3 id="1-4字符串转换日期"><a href="#1-4字符串转换日期" class="headerlink" title="1.4字符串转换日期"></a>1.4字符串转换日期</h3><p>SimpleDateFormat类有一些额外的方法，如parse()，它试图根据存储在给定SimpleDateFormat的对象的格式来转换字符串。</p>
+<pre class=" language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        SimpleDateFormat format <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span><span class="token string">"yy-MM-dd HH:mm:ss"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        String str <span class="token operator">=</span> <span class="token string">"2020-05-6 23:45:48"</span><span class="token punctuation">;</span>
+
+        Date date<span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+
+            date <span class="token operator">=</span> format<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//Wed May 06 23:45:48 CST 2020</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ParseException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"cannot parsable using "</span> <span class="token operator">+</span> format<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span></code></pre>
+<h3 id="1-5-日期转字符串"><a href="#1-5-日期转字符串" class="headerlink" title="1.5 日期转字符串"></a>1.5 日期转字符串</h3><pre class=" language-java"><code class="language-java">    SimpleDateFormat format<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span><span class="token string">"yyyy-MM-dd"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//yyyy 四位数年份 2019  yy两位数年份 19</span>
+    String dateString<span class="token operator">=</span>format<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2 id="2-Calendar类"><a href="#2-Calendar类" class="headerlink" title="2.Calendar类"></a>2.Calendar类</h2><h3 id="2-1获取当前日期"><a href="#2-1获取当前日期" class="headerlink" title="2.1获取当前日期"></a>2.1获取当前日期</h3><ul>
+<li>Calendar类主要用于日期与年，月，日等整数值的转换，Calendar是一个抽象类，<strong>不能直接创建对象</strong>。但是可以使用静态方法<strong>getInstance()获得代表当前日期的日历对象</strong>。</li>
+</ul>
+<h3 id="2-1设置指定日期"><a href="#2-1设置指定日期" class="headerlink" title="2.1设置指定日期"></a>2.1设置指定日期</h3><ul>
+<li>通过该对象可以调用如下方法将日历翻到指定的一个时间：<pre class=" language-java"><code class="language-java">  Calendar c <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  c<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token number">2020</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3 id="2-3从日历中获取有关信息"><a href="#2-3从日历中获取有关信息" class="headerlink" title="2.3从日历中获取有关信息"></a>2.3从日历中获取有关信息</h3></li>
+<li>要从日历中获取有关年份、月份、星期、小时等的信息，可以通过<strong>int get(int filed)</strong>方法得到。其中参数field的值由Calender类的静态常量决定：YEAR代表年,MONTH代表月份,DAY_OF_WEEK代表星期几，HOUR代表小时,MINUTE代表分钟,SECOND代表秒。例如：<pre class=" language-java"><code class="language-java">  Calendar c <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  String str <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>YEAR<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"-"</span> <span class="token operator">+</span> <span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>MONTH<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"-"</span> <span class="token operator">+</span> c<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>DATE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>    </code></pre>
+<blockquote>
+<p>如果<code>get(Calendar.MONTH)</code>返回值为0代表当前日历为一月份，如果返回1代表二月份，以此类推。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="2-4Date与Calendar互相转换"><a href="#2-4Date与Calendar互相转换" class="headerlink" title="2.4Date与Calendar互相转换"></a>2.4Date与Calendar互相转换</h3><pre class=" language-java"><code class="language-java">    <span class="token comment" spellcheck="true">//Calendar转Date</span>
+    Calendar cal1 <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Date date1 <span class="token operator">=</span> cal1<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>cal1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"-------------------------------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>date1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"-------------------------------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//Date转Calendar</span>
+    Date date2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Calendar cal2 <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cal2<span class="token punctuation">.</span><span class="token function">setTime</span><span class="token punctuation">(</span>date2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>cal2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"-------------------------------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>date2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>date2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/*
+    java.util.GregorianCalendar[time=1588781792372,areFieldsSet=true,areAllFieldsSet=true,lenient=true,zone=sun.util.calendar.ZoneInfo[id="Asia/Shanghai",offset=28800000,dstSavings=0,useDaylight=false,transitions=29,lastRule=null],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=1,YEAR=2020,MONTH=4,WEEK_OF_YEAR=19,WEEK_OF_MONTH=2,DAY_OF_MONTH=7,DAY_OF_YEAR=128,DAY_OF_WEEK=5,DAY_OF_WEEK_IN_MONTH=1,AM_PM=0,HOUR=0,HOUR_OF_DAY=0,MINUTE=16,SECOND=32,MILLISECOND=372,ZONE_OFFSET=28800000,DST_OFFSET=0]
+    -------------------------------
+    Thu May 07 00:16:32 CST 2020
+    -------------------------------
+    java.util.GregorianCalendar[time=1588781792385,areFieldsSet=true,areAllFieldsSet=true,lenient=true,zone=sun.util.calendar.ZoneInfo[id="Asia/Shanghai",offset=28800000,dstSavings=0,useDaylight=false,transitions=29,lastRule=null],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=1,YEAR=2020,MONTH=4,WEEK_OF_YEAR=19,WEEK_OF_MONTH=2,DAY_OF_MONTH=7,DAY_OF_YEAR=128,DAY_OF_WEEK=5,DAY_OF_WEEK_IN_MONTH=1,AM_PM=0,HOUR=0,HOUR_OF_DAY=0,MINUTE=16,SECOND=32,MILLISECOND=385,ZONE_OFFSET=28800000,DST_OFFSET=0]
+    -------------------------------
+    Thu May 07 00:16:32 CST 2020
+    */</span></code></pre>
+<blockquote>
+<p>参考：<a href="https://www.cnblogs.com/coder-wzr/p/8416659.html" target="_blank" rel="noopener">https://www.cnblogs.com/coder-wzr/p/8416659.html</a></p>
+</blockquote>
+
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2020-05-07 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2021-05-03
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/1fd66a56.html" title="Java时间日期处理" target="_blank">Java时间日期处理</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/1fd66a56.html" title="Java时间日期处理" target="_blank">https://notecc.ink/posts/1fd66a56.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/1fd66a56.html" data-id="cks5dy1gj004x0w7td6ck2txs" class="article-share-link">
+                Compartir
+            </a>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaSE/" rel="tag">JavaSE</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/1862c94.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            JVM学习笔记(一) ——Java虚拟机内存结构
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/989dd112.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">我有我爱我</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>

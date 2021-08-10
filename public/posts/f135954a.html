@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    数组复制 |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-code/JavaSE/数组复制" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      数组复制
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">606</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">2 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/f135954a.html" class="article-date">
+  <time datetime="2020-12-05T14:37:10.000Z" itemprop="datePublished">2020-12-05</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+
+            
+            <div align = "center">
+    <img src="https://i.loli.net/2020/12/05/h3a7d4mZgMJquIU.png" alt="数组复制" width="66%"/>
+</div>
+
+<a id="more"></a>
+
+<p>在谈数组复制之前，先回忆一下浅拷贝和深拷贝：    </p>
+<ul>
+<li>浅拷贝是指<strong>将引用复制给一个变量，即只是增加一个指针指向目标内存地址</strong>     </li>
+<li>深拷贝是指<strong>用新开辟的内存空间拷贝目标对象后，让变量指向这个新的内存地址</strong>       </li>
+</ul>
+<p>所以，浅拷贝后，<strong>如果新旧任一变量对应的对象发生变动时，另一变量也将变动</strong>，而深拷贝不会，因为指向的是不同的对象。   </p>
+<p>首先无论是对于基本类型数组还是对象类型数组，<strong>一般是不能够使用<code>=</code>直接复制的</strong>，因为这样只是将引用复制给变量，<strong>指向的还是同一个数组。</strong></p>
+<p>Java中对于基本类型的数组复制时，复制时因为没有对象的概念，所以不必考虑深拷贝还是浅拷贝，<strong>复制后都是两个变量指向不同的数组对象。</strong> 当然是实际上<strong>都是深拷贝</strong>。</p>
+<p>而对于对象类型的数组时，则<strong>都是浅拷贝</strong>，因为设计时，深拷贝的使用场景相对较少而且性能很差，如果的确需要深拷贝时，单独实现即可。</p>
+<blockquote>
+<p>特别的，对于String类，由于其不可变性，String类型的数组的拷贝可以理解为都是<strong>深拷贝</strong>。</p>
+</blockquote>
+<p>Java数组的复制有如下四种方式：</p>
+<h2 id="1-Object-clone"><a href="#1-Object-clone" class="headerlink" title="1. Object.clone()"></a>1. Object.clone()</h2><p>此方法是数组对象从Object类继承过来的。</p>
+<pre class=" language-java"><code class="language-java">    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr1 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr2 <span class="token operator">=</span> arr1<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2 id="2-System-arraycopy"><a href="#2-System-arraycopy" class="headerlink" title="2. System.arraycopy()"></a>2. System.arraycopy()</h2><p>此方法内部调用的是一个native方法<br><code>public static native void arraycopy(Object src, int  srcPos,Object dest, int destPos, int length);</code><br>内部参数分别为 源数组、 拷贝开始位置、 目标数组、 粘贴开始位置、 拷贝个数</p>
+<pre class=" language-java"><code class="language-java">    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr3 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr4 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>arr3<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> arr4<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> arr3<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2 id="3-Arrays-copyOf"><a href="#3-Arrays-copyOf" class="headerlink" title="3. Arrays.copyOf()"></a>3. Arrays.copyOf()</h2><p>此方法内部也是调用了<code>System.arraycopy()</code>方法<br><code>public static int[] copyOf(int[] original, int newLength) {}</code>, 第一个参数为源数组，第二个参数为拷贝长度。</p>
+<pre class=" language-java"><code class="language-java">    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr5 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr6 <span class="token operator">=</span> Arrays<span class="token punctuation">.</span><span class="token function">copyOf</span><span class="token punctuation">(</span>arr5<span class="token punctuation">,</span> arr5<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2 id="4-Arrays-copyOfRange"><a href="#4-Arrays-copyOfRange" class="headerlink" title="4. Arrays.copyOfRange()"></a>4. Arrays.copyOfRange()</h2><p>内部同样也是调用了<code>System.arraycopy()</code>方法<br><code>public static int[] copyOfRange(int[] original, int from, int to){}</code>,第一个参数为源数组，第二个参数为拷贝起始位置，第三个参数为拷贝结束位置（不包含）。</p>
+<pre class=" language-java"><code class="language-java">    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr7 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr8 <span class="token operator">=</span> Arrays<span class="token punctuation">.</span><span class="token function">copyOfRange</span><span class="token punctuation">(</span>arr7<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> arr7<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//左闭右开</span></code></pre>
+
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2020-12-05 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2020-12-06
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/f135954a.html" title="数组复制" target="_blank">数组复制</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/f135954a.html" title="数组复制" target="_blank">https://notecc.ink/posts/f135954a.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/f135954a.html" data-id="cks5dy1gd004j0w7tepk61d4r" class="article-share-link">
+                Compartir
+            </a>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaSE/" rel="tag">JavaSE</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/8f5fd259.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            Docker command
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/341ecd43.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">Git</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>

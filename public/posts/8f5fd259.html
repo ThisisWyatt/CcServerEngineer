@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Docker command |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-tools/docker" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      Docker command
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">878</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">3 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/8f5fd259.html" class="article-date">
+  <time datetime="2021-03-20T03:54:34.000Z" itemprop="datePublished">2021-03-20</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Tools/">Tools</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+
+            
+            <h2 id="一、Docker的基本使用和管理"><a href="#一、Docker的基本使用和管理" class="headerlink" title="一、Docker的基本使用和管理"></a>一、Docker的基本使用和管理</h2><h3 id="1-Docker配置"><a href="#1-Docker配置" class="headerlink" title="1. Docker配置"></a>1. Docker配置</h3><ul>
+<li>centos安装docker <code>yum install docker</code></li>
+<li>设置普通用户使用docker<ul>
+<li>创建<code>docker</code>用户组 <code>groupadd docker</code></li>
+<li>添加用户到<code>docker</code>用户组 <code>usermod -a -G docker userName</code></li>
+<li>重启docker <code>systemctl restart docker</code></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+
+<p>/usr/share/zoneinfo/Asia/Shanghai /etc/localtime</p>
+<h3 id="2-Docker镜像操作"><a href="#2-Docker镜像操作" class="headerlink" title="2. Docker镜像操作"></a>2. Docker镜像操作</h3><ul>
+<li>搜索镜像 <code>docker search keyword</code></li>
+<li>获取镜像 <code>docker pull imageName</code></li>
+<li>查看镜像信息 <code>docker iamges</code><ul>
+<li>REPOSITORY：镜像所属的仓库</li>
+<li>TAG：镜像的标签信息，用于标记同一仓库的不同镜像<blockquote>
+<p>为了后续工作中方便使用镜像，可以使用<code>docker tag 名称:[标签] 新名称:[新标签]</code></p>
+</blockquote>
+</li>
+<li>IMAGE ID：镜像的唯一ID号<blockquote>
+<p>可通过ID号来获取对应镜像信息：<code>docker inspect id</code></p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>删除镜像 <code>docker rmi 仓库名称:标签 | ID号</code></li>
+<li>存出镜像 <code>docker save -o 存出文件名 存出的镜像</code></li>
+<li>载入镜像 <code>docker load &lt; | -i 目标镜像文件</code></li>
+<li>上传镜像 <ul>
+<li>打上私有的标签 <code>docker tag 名称:[标签] 新名称:[新标签]</code></li>
+<li>上传 <code>docker push 仓库名称:标签</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="3-Docker容器操作"><a href="#3-Docker容器操作" class="headerlink" title="3. Docker容器操作"></a>3. Docker容器操作</h3><ul>
+<li>创建 <code>docker create [OPTIONS] 镜像 运行的程序</code><blockquote>
+<p><code>docker crate -it hivemq/hivemq4 /bin/bash</code></p>
+</blockquote>
+<ul>
+<li>-i：让容器的输入保持打开状态</li>
+<li>-t：让Docker分配一个伪终端</li>
+</ul>
+</li>
+<li>查看容器运行状态 <code>docker ps -a</code></li>
+<li>启动容器 <code>docker start 容器ID | 名称</code></li>
+<li>创建并运行容器 <code>docker [OPTIONS] run 仓库名称:标签</code><ul>
+<li>-d 后台运行</li>
+<li>–name：自定义一个名称</li>
+<li>-p：指定端口映射，指定容器端口映射到主机端口，<code>主机端口:容器端口</code></li>
+<li>-P：随机端口映射，容器内部端口映射到主机的一个随机端口</li>
+<li>-e：设置相关环境变量</li>
+<li>TZ:设置容器内时区，例如<code>TZ=&quot;Asia/Shanghai&quot;</code></li>
+<li>-v：设置数据卷       <ul>
+<li>创建数据卷：<code>-v 目录</code></li>
+<li>创建数据卷并挂载到主机目录： <code>-v 宿主机目录:容器数据卷目录</code></li>
+<li>挂载数据卷容器：<code>--volumes-from 容器名</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>容器的进入 <code>docker exec -it 容器ID | 名称 /bin/bash</code><blockquote>
+<p>容器是一个与其中运行的shell命令共存亡的众安，shell命令运行则容器运行，shell命令停止则容器停止，使用exit命令会在退出容器的同时关闭容器（但可以docker ps、docker restart恢复），所以使用<code>ctrl+P &amp; ctrl + Q</code>可以退出容器</p>
+</blockquote>
+</li>
+<li>容器终止运行 <code>docker stop 容器ID | 名称</code></li>
+<li>容器导出 <code>docker export 容器ID | 名称 &gt; 文件名</code></li>
+<li>容器导入 <code>cat 文件名 | docker import - 生成镜像名称:标签</code></li>
+<li>容器的删除 <code>docker rm 容器ID | 名称</code></li>
+</ul>
+<p><br><br></p>
+<hr>
+<p><br><br></p>
+<h2 id="二、Docker镜像管理"><a href="#二、Docker镜像管理" class="headerlink" title="二、Docker镜像管理"></a>二、Docker镜像管理</h2><h3 id="2-1-Docker的镜像结构"><a href="#2-1-Docker的镜像结构" class="headerlink" title="2.1 Docker的镜像结构"></a>2.1 Docker的镜像结构</h3><p>镜像不是一个单一的文件，而是由多层构成的。可以由<code>docker history</code>命令来查看镜像中各层的内容及大小，<strong>每一层对应着Dockerfile中的一条指令</strong>，并且有如下特点：    </p>
+<ul>
+<li>Dockerfile中的每个指令都会创建一个新的镜像层</li>
+<li>镜像层可以被缓存和复用</li>
+<li>当Dockerfile的指令修改了，复制的文件变化了，或者构建镜像时指定的变量灵不同了，对应的镜像层缓存就会失效</li>
+<li>当某一层的镜像缓存失效，它之后的镜像层缓存都会失效</li>
+<li>镜像层是不可变的，如果在某一层添加一个文件，然后在下一层删除它，则镜像中依然会包含该文件，只是这个文件在Docker容器中不可见了。</li>
+</ul>
+<p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
+<hr>
+<p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
+<p>/var/lib/docker/containers/3141e6fc8b6f094abf1e4887cffd5a1e256d2f6107cc2d38800a169c36dbf970</p>
+<p>“PortBindings”:{“1883/tcp”:[{“HostIp”:””,”HostPort”:”1884444”}],”8080/tcp”:[{“HostIp”:””,”HostPort”:”8081”}]},</p>
+
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2021-03-20 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2021-07-23
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/8f5fd259.html" title="Docker command" target="_blank">Docker command</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/8f5fd259.html" title="Docker command" target="_blank">https://notecc.ink/posts/8f5fd259.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/8f5fd259.html" data-id="cks5dy1fb002b0w7t5krj6c9a" class="article-share-link">
+                Compartir
+            </a>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cloud/" rel="tag">Cloud</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/2da0528d.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            KMP算法
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/f135954a.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">数组复制</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>

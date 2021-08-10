@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    代理模式 |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-code/DesignMode/代理模式" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      代理模式
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">837</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">3 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/907a70d0.html" class="article-date">
+  <time datetime="2020-08-17T15:27:10.000Z" itemprop="datePublished">2020-08-17</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+
+            
+            <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>意图：为其他对象提供一种代理以<strong>控制对这个对象的访问</strong>。</p>
+<blockquote>
+<p>代理模式和装饰器模式很相似，但代理模式更偏向于权限控制，装饰器模式则更偏向于功能扩展</p>
+</blockquote>
+<p>主要解决：在直接访问对象时带来的问题，比如说：要访问的对象在远程的机器上。在面向对象系统中，有些对象由于某些原因（比如对象创建开销很大，或者某些操作需要<strong>安全控制</strong>，或者需要进程外的访问），<strong>直接访问会给使用者或者系统结构带来很多麻烦</strong>，我们可以在访问此对象时加上一个对此对象的访问层。</p>
+<a id="more"></a>
+
+<p>何时使用：想在访问一个类时做一些控制。</p>
+<p>如何解决：增加中间层。</p>
+<p>关键代码：实现与被代理类组合。</p>
+<p>应用实例： 1、<strong>Windows 里面的快捷方式</strong>。 2、猪八戒去找高翠兰结果是孙悟空变的，可以这样理解：把高翠兰的外貌抽象出来，高翠兰本人和孙悟空都实现了这个接口，猪八戒访问高翠兰的时候看不出来这个是孙悟空，所以说孙悟空是高翠兰代理类。 3、买火车票不一定在火车站买，也可以去代售点。 4、<strong>一张支票或银行存单是账户中资金的代理</strong>。支票在市场交易中用来代替现金，并提供对签发人账号上资金的控制。 5、<strong>spring aop</strong>。</p>
+<p>优点： 1、职责清晰。 2、高扩展性。 3、智能化。</p>
+<p>缺点： 1、由于在客户端和真实主题之间增加了代理对象，因此有些类型的代理模式<strong>可能会造成请求的处理速度变慢</strong>。 2、实现代理模式需要额外的工作，<strong>有些代理模式的实现非常复杂</strong>。</p>
+<p>使用场景：按职责来划分，通常有以下使用场景： 1、<strong>远程代理</strong>。 2、虚拟代理。 3、Copy-on-Write 代理。 4、保护（Protect or Access）代理。 5、Cache代理。 6、<strong>防火墙</strong>（Firewall）代理。 7、同步化（Synchronization）代理。 8、智能引用（Smart Reference）代理。</p>
+<p>注意事项： <strong>1、和适配器模式的区别：适配器模式主要改变所考虑对象的接口，而代理模式不能改变所代理类的接口。 2、和装饰器模式的区别：装饰器模式为了增强功能，而代理模式是为了加以控制。</strong></p>
+<h2 id="UML"><a href="#UML" class="headerlink" title="UML"></a>UML</h2><p>我们将创建一个 Image 接口和实现了 Image 接口的实体类。ProxyImage 是一个代理类，减少 RealImage 对象加载的内存占用。</p>
+<p>ProxyPatternDemo，我们的演示类使用 ProxyImage 来获取要加载的 Image 对象，并按照需求进行显示。<br><img src="https://i.loli.net/2020/08/17/w7lyXZgEWQMHRvY.jpg" alt="proxy_pattern_uml_diagram.jpg"></p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><pre class=" language-java"><code class="language-java"><span class="token keyword">package</span> DP<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/**
+ * Description 代理模式
+ * Author cloudr
+ * Date 2020/8/17 22:55
+ * Version 1.0
+ **/</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AgentPatternDemo</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">new</span> <span class="token class-name">Agent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">doWork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">Subject</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">doWork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">RelSubject</span> <span class="token keyword">implements</span> <span class="token class-name">Subject</span><span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doWork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"工作..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Agent</span> <span class="token keyword">implements</span> <span class="token class-name">Subject</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> RelSubject subject<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">Agent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>subject <span class="token operator">=</span> <span class="token punctuation">(</span>RelSubject<span class="token punctuation">)</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">loadClass</span><span class="token punctuation">(</span><span class="token string">"DP.RelSubject"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//使用类加载器加载</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">goToWork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"上班"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">goOffWork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"下班"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doWork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">goToWork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        subject<span class="token punctuation">.</span><span class="token function">doWork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
+        <span class="token function">goOffWork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><div style="margin-left: 5px  font-size:16px;">
+[1]<a href="https://www.runoob.com/design-pattern/proxy-pattern.html" target="_blank" rel="noopener">https://www.runoob.com/design-pattern/proxy-pattern.html</a><br>
+[2]<a href="五分钟学设计模式.11.代理模式">https://www.bilibili.com/video/BV15V411z7nD</a><br>
+</div> 
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2020-08-17 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2020-10-07
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/907a70d0.html" title="代理模式" target="_blank">代理模式</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/907a70d0.html" title="代理模式" target="_blank">https://notecc.ink/posts/907a70d0.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/907a70d0.html" data-id="cks5dy1g0003c0w7tewk6fvrp" class="article-share-link">
+                Compartir
+            </a>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DesignMode/" rel="tag">DesignMode</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/64f4f5cc.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            模板模式
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/168b5985.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">观察者模式</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>

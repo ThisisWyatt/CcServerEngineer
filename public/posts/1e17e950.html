@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    JVM学习笔记(二)——垃圾收集器和内存分配策略 |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-code/JVM/JVM学习笔记(二) ——垃圾收集器和内存分配策略" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      JVM学习笔记(二)——垃圾收集器和内存分配策略
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">5.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">20 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/1e17e950.html" class="article-date">
+  <time datetime="2020-07-02T05:40:10.000Z" itemprop="datePublished">2020-07-02</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+
+            
+            <p>Java与C++之间有一堵由内存动态分配和垃圾收集技术所围成的“高墙”，墙外的人想进去，墙内的人却想出去。<br><img src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/img/20200702132536.png" alt="垃圾收集器和内存分配策略"></p>
+<a id="more"></a>
+
+<p>对于Java内存运行时区域的各个部分，其中<strong>程序计数器、虚拟机栈、本地方法栈</strong>3个区域的内存随线程而生，随线程而灭。所以方法或者线程结束的时候，内存就自然的随着回收了。而<strong>Java堆和方法区的内存</strong>则不一样，这些部分的内存是需要动态分配的。</p>
+<blockquote>
+<p>栈中的栈帧随着方法的进入和退出而有条不紊地执行着入栈和出栈的操作。每一个线栈中分配多少内存基本上是在类结构确定下来时就已知的。</p>
+</blockquote>
+<blockquote>
+<p>Java堆和方法区中，一个接口的多个实现类、一个方法中的多个分支也可能不一样，我们只有在程序处于运行期间才知道会创建那些对象。</p>
+</blockquote>
+<h2 id="一、如何判断对象已死"><a href="#一、如何判断对象已死" class="headerlink" title="一、如何判断对象已死"></a>一、如何判断对象已死</h2><h3 id="1-1-引用计数法"><a href="#1-1-引用计数法" class="headerlink" title="1.1 引用计数法"></a>1.1 引用计数法</h3><p>在一个对象被引用时加一，被去除引用时减一，这样我们就可以通过<strong>判断引用计数是否为零</strong>来判断一个对象是垃圾。</p>
+<p>优点是实现简单，判定效率也很高，但很少被使用，因为存在着一个很致命的问题，即<strong>循环引用问题</strong>。</p>
+<blockquote>
+<p>A引用了B，B引用了C，C引用了A，它们各自的引用计数都为 1。但是<strong>它们三个对象却从未被其他对象引用，只有它们自身互相引用</strong>。从垃圾的判断思想来看，它们三个确实是不被其他对象引用的，但是此时它们的引用计数却不为零。这就是引用计数法存在的循环引用问题。</p>
+</blockquote>
+<br>
+
+<hr>
+<br>
+
+<h3 id="1-2-可达性分析算法（GC-Root-Tracing）"><a href="#1-2-可达性分析算法（GC-Root-Tracing）" class="headerlink" title="1.2 可达性分析算法（GC Root Tracing）"></a>1.2 可达性分析算法（GC Root Tracing）</h3><p><strong>从GC Root出发，所有可达的对象都是存活的对象，而所有不可达的对象都是垃圾</strong>。</p>
+<ul>
+<li>GC Root:      <ul>
+<li>虚拟机栈中（栈帧中的本地变量表）中引用的对象</li>
+<li>方法区中静态属性引用的对象</li>
+<li>方法区中常量引用的对象</li>
+</ul>
+</li>
+</ul>
+<p>简单地说，GC Root就是<strong>经过精心挑选的一组活跃引用</strong>，这些引用是肯定存活的。那么通过这些引用延伸到的对象，自然也是存活的。</p>
+<p>此时需要注意的是，<strong>即使是在可达性分析算法中不可达的对象，也并非是“非死不可”</strong>，此时它们处于“缓刑”阶段，然后需要至少经历两次标记过程：</p>
+<ol>
+<li>此对象是否有必要执行<code>finalize()</code>方法，如果有必要则进入下一阶段。<blockquote>
+<p>当对象没有覆盖<code>finalize()</code>方法或者此方法已经被虚拟机调用过，则会被视为没必要执行。如果有必要执行，则会被放置在<code>F-QueueL</code>的一个队列中，并由一个低优先级的<code>Finalizer</code>线程去执行它</p>
+</blockquote>
+</li>
+<li>对<code>F-QueueL</code>中的对象进行二次标记，如果对象在<code>finalize()</code>中成功拯救自己，则会被移出“即将回收”的集合。<blockquote>
+<p><code>finalize()</code>:只要重新与引用链上任意一个对象建立关联即可</p>
+</blockquote>
+</li>
+</ol>
+<p>再谈引用：    </p>
+<ul>
+<li>强引用：在程序代码之中普遍存在的，类似<code>Object c=new Object()</code></li>
+<li>软引用：<strong>有用但并非有必需的对象</strong>，对于这一类对象，在系统将要发生内存溢出的之前，将会把这些对象列进回收范围之中进行第二次回收</li>
+<li>弱引用：<strong>非必需对象</strong>，<strong>只能生存到下一次垃圾收集之前</strong></li>
+<li>虚引用：一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象的实例，一个对象设置虚引用的唯一目的就是<strong>能在这个对象被收集器回收时收到一个系统通知</strong>，JDK1.2以后通过<code>PhantomReference</code>类来实现虚引用</li>
+</ul>
+<br>
+
+<hr>
+<br>
+
+<h3 id="1-3-方法区的回收"><a href="#1-3-方法区的回收" class="headerlink" title="1.3 方法区的回收"></a>1.3 方法区的回收</h3><p>虽然Java虚拟机规范中确实说过<strong>可以不要求</strong>虚拟机在方法区实现垃圾收集，但<strong>方法区并不是没有垃圾回收</strong></p>
+<br>
+
+<p>方法区（永久代）的垃圾回收主要是两部分的内容：</p>
+<blockquote>
+<p><strong>仅仅是“可以”</strong>,并不是像对象一样，不使用了就必然会被回收</p>
+</blockquote>
+<ul>
+<li>废弃常量<blockquote>
+<p>例如一个字符串“abc”已经进入了常量池，但当前系统并没有任何一个String对象的值引用常量池中的“abc”变量的</p>
+</blockquote>
+</li>
+<li>无用的类<blockquote>
+<p>该类的所有实例都已经被回收<br><br>加载该类的ClassLoader已经被回收<br><br>该类对应的java.lang.Class对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法。(以上三点需同时满足)</p>
+</blockquote>
+</li>
+</ul>
+<p><br><br></p>
+<hr>
+<p><br><br></p>
+<h2 id="二、垃圾回收算法"><a href="#二、垃圾回收算法" class="headerlink" title="二、垃圾回收算法"></a>二、垃圾回收算法</h2><h3 id="2-1-标记-清除算法"><a href="#2-1-标记-清除算法" class="headerlink" title="2.1 标记-清除算法"></a>2.1 标记-清除算法</h3><p>算法分为两个部分：</p>
+<ul>
+<li>标记：首先标记出所有需要回收的对象</li>
+<li>清除：在标记完成后统一回收所有被标记的对象</li>
+</ul>
+<p>不足：</p>
+<ul>
+<li>效率问题<blockquote>
+<p>标记和清除的效率都很低</p>
+</blockquote>
+</li>
+<li>空间问题<blockquote>
+<p>标记清除之后会产生大量不连续的内存碎片，导致以后分配较大的对象时，找不到足够多的连续内存而不得不触发一次GC</p>
+</blockquote>
+</li>
+</ul>
+<br>
+
+<hr>
+<br>
+
+<h3 id="2-2-复制算法"><a href="#2-2-复制算法" class="headerlink" title="2.2 复制算法"></a>2.2 复制算法</h3><p>将原有的内存空间分为两块，每次只使用一块，<strong>在垃圾回收时，将正在使用的内存中的存活对象复制到未使用的内存块中。之后清除正在使用的内存块中的所有对象，之后交换两个内存块的角色，完成垃圾回收</strong>。</p>
+<p>不足：</p>
+<ul>
+<li>要将内存空间折半，极大地浪费了内存空间。</li>
+</ul>
+<p>改进：     </p>
+<ul>
+<li>IBM公司的专门研究表明，新生代的98%对象都是“朝生夕死”的，所以并不需要按照1:1的比例来划分内存空间，而是将内存分为一块较大的Eden空间和两块较小的Survivor空间，<strong>每次使用Eden和其中一块Survivor。当回收时，将Eden空间和Survivor中还活着的对象一次性复制到另外一块Survivor空间上，最后清理掉Eden和刚刚用过的那一个Survivor。</strong></li>
+<li>HotSpot虚拟机默认的Eden和Survivor的大小比例是8:1:1，如果Survivor空间不够用时，则需要依赖其他内存空间进行<strong>担保</strong>（直接进入老年代）</li>
+</ul>
+<br>
+
+<hr>
+<br>
+
+<h3 id="2-3-标记整理算法"><a href="#2-3-标记整理算法" class="headerlink" title="2.3 标记整理算法"></a>2.3 标记整理算法</h3><p>可以理解是标记清除算法的优化版，其同样需要经历两个阶段：</p>
+<ul>
+<li>标记结算<blockquote>
+<p>从 GC Root 引用集合触发去标记所有对象</p>
+</blockquote>
+</li>
+<li>整理阶段<blockquote>
+<p>让所有存活的对象向一端移动，然后直接清理掉端边界以外的内存</p>
+</blockquote>
+</li>
+</ul>
+<p><br><br></p>
+<hr>
+<p><br><br></p>
+<h2 id="三、分代思想"><a href="#三、分代思想" class="headerlink" title="三、分代思想"></a>三、分代思想</h2><p>如果我们单独采用任何一种算法，那么最终的垃圾回收效率都不会很好。因此在实际的垃圾回收算法中采用了分代算法。即根据对象存活周期的不同将内存划分为几块。一般是将堆划分为<strong>新生代</strong>和<strong>老年代</strong>，这样就可以根据各个年代的特点采用不同的垃圾回收算法。</p>
+<p>例如对于<strong>存活对象少的新生代区域，比较适合采用复制算法。这样只需要复制少量对象，便可完成垃圾回收，并且还不会有内存碎片。而对于老年代这种存活对象多的区域，比较适合采用标记压缩算法或标记清除算法，这样不需要移动太多的内存对象。</strong></p>
+<p>HotSpot的算法实现</p>
+<h3 id="枚举根节点"><a href="#枚举根节点" class="headerlink" title="枚举根节点"></a>枚举根节点</h3><p>可达性分析从GC Roots结点找引用链，但可作为结点的全局性引用和执行上下文的数据可能会过于庞大，因此如果要逐个检查里面的应用，那么必然会消耗非常多的资源。此外可达性分析对于时间的敏感性还体现在GC停顿上，<strong>不可以出现分析对象引用关系的过程时其还在不断变化</strong>,因此GC进行时必须停顿所有Java执行线程（<strong>“Stop The World”</strong>）。</p>
+<p>目前主流的Java虚拟机使用的都是准确式GC:</p>
+<p>所以当执行系统停顿下来时，<strong>并不需要逐个检查所有全局性引用和执行上下文</strong>。HotSpot使用一组称为<strong>OopMap的数据结构</strong>来达到这个目的。</p>
+<blockquote>
+<p>在类加载完成的时候，HotSpot就把对象内什么偏移量什么偏移量是什么类型的数据计算出来，在JIT编译的过程中，也会在特定的位置记录下栈和寄存器中哪些位置是引用。这样在GC扫描时，就可以直接得到这些信息了。</p>
+</blockquote>
+<hr>
+<h3 id="安全点"><a href="#安全点" class="headerlink" title="安全点"></a>安全点</h3><p>在OopMap的帮助下，HotSop可以很快的完成GC Roots枚举，但是如果为每一条指令都生成对于的OopMap，那么会使得GC的空间成本很高。</p>
+<p>所以程序<strong>只是在特点的位置（安全点）停下来开始GC</strong></p>
+<blockquote>
+<p>安全点的选择不能选得太少让GC等待时间过长，也不能选得太多让程序长时间执行。所以选择的地方的特征是<strong>指令序列复用</strong>，例如方法调用、循环跳转、异常跳转等。</p>
+</blockquote>
+<p>如何在GC发生是让所有线程都”跑”到最近的安全点？</p>
+<ol>
+<li>抢先式中断<blockquote>
+<p>不需要线程的执行代码主动去配合，首先把所有线程中断，然后让没有到安全点的线程，跑到安全点上</p>
+</blockquote>
+</li>
+<li>主动式中断<blockquote>
+<p>不直接对线程操作，仅仅简单地设置一个标志，各个线程执行是主动轮询这个标志</p>
+</blockquote>
+</li>
+</ol>
+<hr>
+<h3 id="安全区域"><a href="#安全区域" class="headerlink" title="安全区域"></a>安全区域</h3><p>如果在程序线程处于Sleep状态或者Blocked状态时，线程无法响应JVM中断请求，走到安全点去挂起。对于这种情况就需要安全区域来解决</p>
+<p>即安全区域是指在一段代码之中，引用关系不会发生变化。在这个区域中的任意地方开始GC都是安全的，我们也可以把安全区看做是被扩展了的安全点。</p>
+<p><br><br></p>
+<hr>
+<p><br><br></p>
+<h2 id="四、分区思想"><a href="#四、分区思想" class="headerlink" title="四、分区思想"></a>四、分区思想</h2><p>分代思想按照对象的生命周期长短将其分为了两个部分（新生代、老年代），但 JVM 中其实还有一个分区思想，即将<strong>整个堆空间划分成连续的不同小区间。每一个小区间都独立使用，独立回收</strong>，这种算法的好处是可以控制一次回收多少个区间，可以较好地控制 GC 时间。</p>
+<p><br><br></p>
+<hr>
+<p><br><br></p>
+<h2 id="五、垃圾回收器"><a href="#五、垃圾回收器" class="headerlink" title="五、垃圾回收器"></a>五、垃圾回收器</h2><h3 id="5-1-串形-Serial-回收器"><a href="#5-1-串形-Serial-回收器" class="headerlink" title="5.1 串形(Serial)回收器"></a>5.1 串形(Serial)回收器</h3><p>串行回收器是指使用<strong>单线程</strong>进行垃圾回收的回收器。因为每次回收时只有一个线程，因此串行回收器<strong>在并发能力较弱的计算机上，其专注性和独占性的特点往往能让其有更好的性能表现。</strong></p>
+<p>串行回收器可以在新生代和老年代使用，根据作用于不同的堆空间，分为新生代串行回收器和老年代串行回收器。</p>
+<h4 id="5-1-1-新生代串行回收器"><a href="#5-1-1-新生代串行回收器" class="headerlink" title="5.1.1 新生代串行回收器"></a>5.1.1 新生代串行回收器</h4><p>在新生代串行回收器中使用的是<strong>复制算法</strong>。在串行回收器进行垃圾回收时，会触发<code>Stop-The-World</code>现象，即其他线程都需要暂停，等待垃圾回收完成。因此在某些情况下，其会造成较为糟糕的用户体验。</p>
+<hr>
+<h4 id="5-1-2-老年代串行回收器"><a href="#5-1-2-老年代串行回收器" class="headerlink" title="5.1.2 老年代串行回收器"></a>5.1.2 老年代串行回收器</h4><p>在老年代串行回收器中使用的是<strong>标记整理算法</strong>。其与新生代串行收集器一样，只能串行、独占式地进行垃圾回收，因此也经常会有较长时间的 Stop-The-World 发生。</p>
+<p>但老年代串行回收器的好处之一，就是其<strong>可以与多种新生代回收器配合使用</strong>。</p>
+<br>
+
+<hr>
+<br>
+
+<h3 id="5-2-并行回收器"><a href="#5-2-并行回收器" class="headerlink" title="5.2 并行回收器"></a>5.2 并行回收器</h3><h4 id="5-2-1-新生代ParNew回收器"><a href="#5-2-1-新生代ParNew回收器" class="headerlink" title="5.2.1 新生代ParNew回收器"></a>5.2.1 新生代ParNew回收器</h4><p><strong>串行回收器的多线程版本</strong>，其回收策略、算法以及参数和新生代串行回收器一样。</p>
+<p>新生代 ParNew 回收器同样使用复制算法的垃圾回收算法，其垃圾收集过程中同样会触发<code>Stop-The-World</code>现象。但因为其使用多线程进行垃圾回收，因此<strong>在并发能力强的CPU上，其产生的停顿时间要短于串行回收器</strong>。</p>
+<p>但在<strong>单CPU或并能能力弱</strong>的系统中，并行回收器效果会因为线程切换的原因，其实际表现<strong>反而不如串行回收器</strong>。</p>
+<hr>
+<h4 id="5-2-2-新生代Parallel-GC回收器"><a href="#5-2-2-新生代Parallel-GC回收器" class="headerlink" title="5.2.2 新生代Parallel GC回收器"></a>5.2.2 新生代Parallel GC回收器</h4><p>新生代 Parallel GC 回收器与新生代 ParNew 回收器非常类似，其也是<strong>使用复制算法，都是多线程、独占式的收集器，也会导致 Stop-The-World</strong>。但其余 ParNew 回收器的一个重大不同是：其<strong>非常注重系统的吞吐量</strong></p>
+<p>之所以说新生代 Parallel GC 回收器非常注重系统吞吐量，是因为其有一个自适应GC调节策略</p>
+<hr>
+<h4 id="5-2-3-老年代-ParallelOldGC-回收器"><a href="#5-2-3-老年代-ParallelOldGC-回收器" class="headerlink" title="5.2.3 老年代 ParallelOldGC 回收器"></a>5.2.3 老年代 ParallelOldGC 回收器</h4><p>老年代 ParallelOldGC 回收器也是一种多线程并发的回收器，与新生代ParallelGC收集器一样，其<strong>也是注重吞吐量的收集器，只不过其是作用于老年代</strong>。</p>
+<p>ParallelOldGC回收器使用的是<strong>标记整理算法</strong>，只有在 JDK1.6中才可以使用。</p>
+<br>
+
+<hr>
+<br>
+
+<h3 id="5-3-CMS回收器"><a href="#5-3-CMS回收器" class="headerlink" title="5.3 CMS回收器"></a>5.3 CMS回收器</h3><p>CMS 回收器<strong>主要关注系统停顿时间</strong>。CMS回收器全称为 Concurrent Mark Sweep，意为<strong>标记清除</strong>算法，其是一个使用<strong>多线程并行回收</strong>的垃圾回收器。</p>
+<p>CMS 的主要工作步骤有：</p>
+<ol>
+<li>初始标记</li>
+<li>并发标记</li>
+<li>重新标记<blockquote>
+<p>为了修正标记期间因程序继续运作而导致标记产生变动的那一部分对象的标记记录，比初始标记阶段时间较长，但远小于并发标记</p>
+</blockquote>
+</li>
+<li>并发清除<blockquote>
+<p>耗时最长的并发标记和并发清除线程都可以与用户线程并发执行</p>
+</blockquote>
+</li>
+</ol>
+<p>优点：</p>
+<ul>
+<li>并发收集低停顿</li>
+</ul>
+<p>缺点:</p>
+<ul>
+<li>对CPU资源非常敏感</li>
+<li>无法处理浮动资源<blockquote>
+<p>由于CMS并发清理阶段用户线程还在运行着，伴随程序运行自然就还会有新的垃圾不断产生，只能等待下一次GC,这些垃圾就被称为浮动垃圾</p>
+</blockquote>
+</li>
+<li>会出现空间碎片<blockquote>
+<p>基于标记-清理算法</p>
+</blockquote>
+</li>
+</ul>
+<p><br><br><br></p>
+<hr>
+<p><br><br><br></p>
+<h3 id="5-4-G1收集器"><a href="#5-4-G1收集器" class="headerlink" title="5.4 G1收集器"></a>5.4 G1收集器</h3><p>G1 回收器是 JDK 1.7 中使用的全新垃圾回收器，从长期目标来看，其是为了取代 CMS 回收器。</p>
+<p>G1 回收器拥有独特的垃圾回收策略，和之前所有垃圾回收器采用的垃圾回收策略不同。从分代看，G1 依然属于分代垃圾回收器。但它<strong>最大的改变是使用了分区算法</strong>，从而<strong>使得 Eden 区、From 区、Survivor 区和老年代等各块内存不必连续</strong>。</p>
+<p>工作过程：</p>
+<ol>
+<li>初始标记<blockquote>
+<p>耗时较短，仅仅标记一下GC Roots能够直接关联到的对象</p>
+</blockquote>
+</li>
+<li>并发标记<blockquote>
+<p>耗时较长，进行可达性分析，找出存活的对象</p>
+</blockquote>
+</li>
+<li>最终标记<blockquote>
+<p>修正在并发标记过程中因用户程序继续运行而导致的标记变动的那一部分</p>
+</blockquote>
+</li>
+<li>筛选回收<blockquote>
+<p>首先对各个Region的回收价值和成本进行排序，根据用户所期望的GC停顿时间制定回收计划</p>
+</blockquote>
+</li>
+</ol>
+<p>特点：</p>
+<ul>
+<li>并行和并发</li>
+<li>分代收集</li>
+<li>空间整合<blockquote>
+<p>基于<strong>标记-整理</strong>算法</p>
+</blockquote>
+</li>
+<li>可预测的停顿<blockquote>
+<p>通过建立一个可预测的停顿时间模型，使得消耗在垃圾收集上的时间不得超过可预测的时间。之所以能够建立一个可预测的停顿时间模型，是因为它在后台维护了一个优先列表，每次优先收集价值最大的Region，有效地提高收集效率。</p>
+</blockquote>
+</li>
+</ul>
+<p><br><br></p>
+<hr>
+<p><br><br></p>
+<h2 id="六、内存分配和回收策略"><a href="#六、内存分配和回收策略" class="headerlink" title="六、内存分配和回收策略"></a>六、内存分配和回收策略</h2><p>Java对象的内存分配，大方向来讲，就是在堆上分配（但也有可能经过JIT编译后被拆散为标量类型并间接地在栈上分配)</p>
+<p>对象主要分配在新生代的Eden区上，如果启动了本地线程分配缓冲，将按照线程优先在TLAB上分配，少数情况下也会直接在老年代中分配，分配规则并不是固定不变的，其细节取决于使用的哪一种垃圾回收器组合以及虚拟机的相关参数设置。</p>
+<p>以下是几条最普遍的内存分配规则：</p>
+<h3 id="6-1-对象优先在Eden分配"><a href="#6-1-对象优先在Eden分配" class="headerlink" title="6.1 对象优先在Eden分配"></a>6.1 对象优先在Eden分配</h3><p>大多数情况下，对象在新生代Eden区中分配。当Eden区没有足够的空间进行分配时，虚拟机将发起一次Minor GC</p>
+<hr>
+<h3 id="6-2-大对象直接进入老年代"><a href="#6-2-大对象直接进入老年代" class="headerlink" title="6.2 大对象直接进入老年代"></a>6.2 大对象直接进入老年代</h3><p>大对象是指需要大量连续内存空间的Java对象，最典型的就是那种很长的字符串或者数组</p>
+<hr>
+<h3 id="6-3-长期存活的对象将进入老年代"><a href="#6-3-长期存活的对象将进入老年代" class="headerlink" title="6.3 长期存活的对象将进入老年代"></a>6.3 长期存活的对象将进入老年代</h3><p>虚拟机给每个对象定义了一个对象年龄计数器。<strong>如果对象在Eden出生并经过一此Minor GC后仍然存错，并且被Survivor容纳的话，就将对象年龄设为1，此后每经历过一此Minor GC,对象年龄就加1，当年龄增加到一定程度时（默认为15）,就晋升到老年代</strong>。</p>
+<hr>
+<h3 id="6-4-动态对象年龄判定"><a href="#6-4-动态对象年龄判定" class="headerlink" title="6.4 动态对象年龄判定"></a>6.4 动态对象年龄判定</h3><p>虚拟机并不是永远地要求对象的年龄必须达到了MaxTenuringThreshold才能晋升老年代，<strong>如果Survivor空间中相同年龄所有对象大小的总和大于Survivor空间的一般，年龄大于或等于该年龄的对象就可以直接进入老年代</strong>。</p>
+<hr>
+<h3 id="6-5-空间担保分配"><a href="#6-5-空间担保分配" class="headerlink" title="6.5 空间担保分配"></a>6.5 空间担保分配</h3><p><strong>虚拟机会先检查老年代最大可用的连续空间是否大于新生代所有对象的总空间</strong>，如果这个条件成立，那么可以确认Minor GC是安全的。如果不成立，虚拟机会查看HandlePromotionFailure设置值是否允许担保失败？如果允许，那么会继续检查老年代最大可用的连续空间是否大于历次晋升到老年代对象的平均大小，如果大于将尝试进行一次Minor GC,尽管这次是有风险的。如果小于或者HandlePromotionFailure设置不允许冒险，那这是也要改为进行一次Full GC。</p>
+<p>什么是冒险？前面提到过新生代使用复制收集算法，但为了提升内存利用率。只使用其中一个survivor空间作为备份。因此当出现大量对象在Minor GC后仍然存活的情况。就需要老年代进行分担,把survivor无法容纳的对象直接进入老年代。前提是老年代本身还有容纳这些对象的剩余空间。<strong>有多少对象会活下来，在实际完成内存回收之前是无法明确知道。所以只好取之前每一次回收晋升到老年代对象容量的平均大小值作为经验值与剩余老年代的剩余空间进行比较。</strong>决定是否进行一次Full GC让老年代腾出更多空间。</p>
+<p>如果担保失败的话，就只好在担保失败后重新发起一次Full GC.</p>
+<h2 id="七、垃圾回收的几种类型"><a href="#七、垃圾回收的几种类型" class="headerlink" title="七、垃圾回收的几种类型"></a>七、垃圾回收的几种类型</h2><h3 id="7-1-Minor-GC"><a href="#7-1-Minor-GC" class="headerlink" title="7.1 Minor GC"></a>7.1 Minor GC</h3><p><strong>新生代空间回收内存被称为 Minor GC</strong>，有时候也称之为 Young GC。对于 Minor GC，你需要知道的一些点：</p>
+<ul>
+<li><p>JVM 无法为一个新的对象分配空间时会触发 Minor GC，比如当 Eden 区满了。所以 Eden 区越小，越频繁执行 Minor GC。</p>
+</li>
+<li><p>当年轻代中的 Eden 区分配满的时候，年轻代中的部分对象会晋升到老年代，所以 Minor GC 后老年代的占用量通常会有所升高。</p>
+</li>
+<li><p>质疑常规的认知，所有的 Minor GC 都会触发 Stop-The-World，停止应用程序的线程。对于大部分应用程序，停顿导致的延迟都是可以忽略不计的，因为大部分 Eden 区中的对象都能被认为是垃圾，永远也不会被复制到 Survivor 区或者老年代空间。如果情况相反，即 Eden 区大部分新生对象不符合 GC 条件（即他们不被垃圾回收器收集），那么 Minor GC 执行时暂停的时间将会长很多（因为他们要JVM要将他们复制到 Survivor 区或老年代）。</p>
+</li>
+</ul>
+<hr>
+<h3 id="7-2-Major-GC"><a href="#7-2-Major-GC" class="headerlink" title="7.2 Major GC"></a>7.2 Major GC</h3><p><strong>从老年代空间回收内存被称为 Major GC</strong>，有时候也称之为 Old GC。</p>
+<p><strong>许多 Major GC 是由 Minor GC 触发的</strong>，所以很多情况下将这两种 GC 分离是不太可能的。</p>
+<blockquote>
+<p>Minor GC 作用于新生代，Major GC 作用于老年代。 分配对象内存时发现内存不够，触发 Minor GC。Minor GC 会将对象移到老年代中，如果此时老年代空间不够，那么触发 Major GC。因此才会说，许多 Major GC 是由 Minor GC 引起的。</p>
+</blockquote>
+<hr>
+<h3 id="7-3-Full-GC"><a href="#7-3-Full-GC" class="headerlink" title="7.3 Full GC"></a>7.3 Full GC</h3><p><strong>Full GC 是清理整个堆空间 —— 包括年轻代、老年代和永久代（如果有的话）</strong>。因此 Full GC 可以说是 Minor GC 和 Major GC 的结合。</p>
+<blockquote>
+<p>当准备要触发一次 Minor GC 时，如果发现年轻代的剩余空间比以往晋升的空间小，则不会触发 Minor GC 而是转为触发 Full GC。因为JVM此时认为：之前这么大空间的时候已经发生对象晋升了，那现在剩余空间更小了，那么很大概率上也会发生对象晋升。既然如此，那么我就直接帮你把事情给做了吧，直接来一次 Full GC，整理一下老年代和年轻代的空间。</p>
+</blockquote>
+<blockquote>
+<p>另外，即在永久代分配空间但已经没有足够空间时，也会触发 Full GC。</p>
+</blockquote>
+<h3 id="7-4-Stop-The-World"><a href="#7-4-Stop-The-World" class="headerlink" title="7.4 Stop-The-World"></a>7.4 Stop-The-World</h3><p>Stop-The-World，中文一般翻译为全世界暂停，是指<strong>在进行垃圾回收时因为标记或清理的需要，必须让所有执行任务的线程停止执行任务，从而让垃圾回收线程回收垃圾的时间间隔。</strong></p>
+<p>在 Stop-The-World 这段时间里，<strong>所有非垃圾回收线程都无法工作</strong>，都暂停下来。只有等到垃圾回收线程工作完成才可以继续工作。可以看出，Stop-The-World 时间的长短将关系到应用程序的响应时间，因此在 GC 过程中，Stop-The-World 的时间是一个非常重要的指标。</p>
+<h2 id="推荐文章："><a href="#推荐文章：" class="headerlink" title="推荐文章："></a>推荐文章：</h2><blockquote>
+<p><a href="https://www.cnblogs.com/chanshuyi/p/jvm_serial_08_jvm_garbage_collection.html" target="_blank" rel="noopener">陈树义 JVM基础系列第8讲：JVM 垃圾回收机制</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://www.cnblogs.com/chanshuyi/p/jvm_serial_09_jvm_garabage_collector.html" target="_blank" rel="noopener">陈树义 JVM基础系列第9讲：JVM垃圾回收器</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://www.cnblogs.com/chanshuyi/p/jvm_serial_10_gc_type.html" target="_blank" rel="noopener">陈树义 JVM基础系列第10讲：垃圾回收的几种类型</a></p>
+</blockquote>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[1]周志明.深入理解Java虚拟机.北京：机械工业出版社<br>[2]<a href="https://www.cnblogs.com/chanshuyi/p/jvm_serial_08_jvm_garbage_collection.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/jvm_serial_08_jvm_garbage_collection.html</a><br>[3]<a href="https://www.cnblogs.com/chanshuyi/p/jvm_serial_09_jvm_garabage_collector.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/jvm_serial_09_jvm_garabage_collector.html</a><br>[4]<a href="https://www.cnblogs.com/chanshuyi/p/jvm_serial_10_gc_type.html" target="_blank" rel="noopener">https://www.cnblogs.com/chanshuyi/p/jvm_serial_10_gc_type.html</a></p>
+
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2020-07-02 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2020-07-02
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/1e17e950.html" title="JVM学习笔记(二)——垃圾收集器和内存分配策略" target="_blank">JVM学习笔记(二)——垃圾收集器和内存分配策略</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/1e17e950.html" title="JVM学习笔记(二)——垃圾收集器和内存分配策略" target="_blank">https://notecc.ink/posts/1e17e950.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/1e17e950.html" data-id="cks5dy1g3003l0w7t6m6080yq" class="article-share-link">
+                Compartir
+            </a>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/1a4b62fe.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            单例模式
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/3ad27f93.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">JVM学习笔记——推荐文章</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>

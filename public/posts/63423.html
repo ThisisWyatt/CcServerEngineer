@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Hexo+Ocean添加版权说明 |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-code/Hexo+Ocean添加版权说明" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      Hexo+Ocean添加版权说明
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">842</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">3 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/63423.html" class="article-date">
+  <time datetime="2021-08-09T10:06:58.767Z" itemprop="datePublished">2021-08-09</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Construct-Blog/">Construct Blog</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+
+            
+            <p>❄</p>
+<a id="more"></a>
+
+<h3 id="1-themes-ocean-layout-partial中创建copyright-ejs-并输入以下代码："><a href="#1-themes-ocean-layout-partial中创建copyright-ejs-并输入以下代码：" class="headerlink" title="1. themes\ocean\layout\_partial中创建copyright.ejs,并输入以下代码："></a>1. <code>themes\ocean\layout\_partial</code>中创建<code>copyright.ejs</code>,并输入以下代码：</h3><pre class=" language-javascript"><code class="language-javascript">    <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> 《添加版权声明 <span class="token operator">--</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span>添加版权声明https<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span>github<span class="token punctuation">.</span>com<span class="token operator">/</span>JoeyBling<span class="token operator">/</span>hexo<span class="token operator">-</span>theme<span class="token operator">-</span>yilia<span class="token operator">-</span>plus<span class="token operator">/</span>commit<span class="token operator">/</span>c1215e132f6d5621c5fea83d3c4f7ccbcca074a3<span class="token operator">--</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">%</span>
+    <span class="token keyword">var</span> sUrl <span class="token operator">=</span> url<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex">/index\.html$/</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sUrl <span class="token operator">=</span> <span class="token regex">/^(http:|https:)\/\//</span><span class="token punctuation">.</span><span class="token function">test</span><span class="token punctuation">(</span>sUrl<span class="token punctuation">)</span> <span class="token operator">?</span> sUrl <span class="token punctuation">:</span> <span class="token string">'https:'</span> <span class="token operator">+</span> sUrl<span class="token punctuation">;</span>
+    <span class="token operator">%</span><span class="token operator">></span>
+
+    <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> #版权基础设定：<span class="token number">0</span><span class="token operator">-</span>关闭声明； <span class="token number">1</span><span class="token operator">-</span>文章对应的md文件里有declare<span class="token punctuation">:</span> <span class="token boolean">true</span>属性，才有版权声明； <span class="token number">2</span><span class="token operator">-</span>所有文章均有版权声明 且如果文章对应的md文件里有declare<span class="token punctuation">:</span> <span class="token boolean">false</span> 则取消此篇文章的版权声明 <span class="token operator">--</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">%</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>theme<span class="token punctuation">.</span>declare<span class="token punctuation">.</span>declare_type <span class="token operator">===</span> <span class="token number">2</span> <span class="token operator">||</span> <span class="token punctuation">(</span>theme<span class="token punctuation">.</span>declare<span class="token punctuation">.</span>declare_type <span class="token operator">===</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> copyrighty<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>index<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token operator">%</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"declare"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>strong <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"author"</span><span class="token operator">></span>本文作者：<span class="token operator">&lt;</span><span class="token operator">/</span>strong<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">%</span> <span class="token keyword">if</span><span class="token punctuation">(</span>config<span class="token punctuation">.</span>author <span class="token operator">!=</span> undefined<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token operator">%</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">%</span><span class="token operator">=</span> config<span class="token punctuation">.</span>author<span class="token operator">%</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">%</span> <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span><span class="token operator">%</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>font color<span class="token operator">=</span><span class="token string">"red"</span><span class="token operator">></span>请在博客根目录“_config<span class="token punctuation">.</span>yml”中填入正确的“author”<span class="token operator">&lt;</span><span class="token operator">/</span>font<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">%</span><span class="token punctuation">}</span><span class="token operator">%</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>br<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> <span class="token operator">&lt;</span>strong <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"create-time"</span><span class="token operator">></span>发布时间：<span class="token operator">&lt;</span><span class="token operator">/</span>strong<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">%</span><span class="token operator">-</span> <span class="token function">date</span><span class="token punctuation">(</span>post<span class="token punctuation">.</span>date<span class="token punctuation">,</span> <span class="token string">'YYYY-MM-DD'</span><span class="token punctuation">)</span> <span class="token operator">%</span><span class="token operator">></span> 
+        <span class="token operator">&lt;</span>br<span class="token operator">></span> <span class="token operator">--</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> <span class="token operator">&lt;</span>strong <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"update-time"</span><span class="token operator">></span>最后更新：<span class="token operator">&lt;</span><span class="token operator">/</span>strong<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">%</span><span class="token operator">-</span> <span class="token function">date</span><span class="token punctuation">(</span>post<span class="token punctuation">.</span>updated<span class="token punctuation">,</span> <span class="token string">'YYYY-MM-DD'</span><span class="token punctuation">)</span> <span class="token operator">%</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>br<span class="token operator">></span> <span class="token operator">--</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> <span class="token operator">&lt;</span>strong <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"article-titles"</span><span class="token operator">></span>本文标题：<span class="token operator">&lt;</span><span class="token operator">/</span>strong<span class="token operator">></span>
+        <span class="token operator">&lt;</span>a href<span class="token operator">=</span><span class="token string">"&lt;%= config.url %>/&lt;%= post.path %>"</span> title<span class="token operator">=</span><span class="token string">"&lt;%= post.title %>"</span> target<span class="token operator">=</span><span class="token string">"_blank"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">%</span><span class="token operator">=</span> post<span class="token punctuation">.</span>title <span class="token operator">%</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>a<span class="token operator">></span>
+        <span class="token operator">&lt;</span>br<span class="token operator">></span> <span class="token operator">--</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>strong <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"article-url"</span><span class="token operator">></span>本文链接：<span class="token operator">&lt;</span><span class="token operator">/</span>strong<span class="token operator">></span>
+        <span class="token operator">&lt;</span>a href<span class="token operator">=</span><span class="token string">"&lt;%= config.url %>/&lt;%= post.path %>"</span> title<span class="token operator">=</span><span class="token string">"&lt;%= post.title %>"</span> target<span class="token operator">=</span><span class="token string">"_blank"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">%</span><span class="token operator">=</span> config<span class="token punctuation">.</span>url <span class="token operator">%</span><span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span><span class="token operator">%</span><span class="token operator">=</span> post<span class="token punctuation">.</span>path <span class="token operator">%</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>a<span class="token operator">></span>
+        <span class="token operator">&lt;</span>br<span class="token operator">></span>
+        <span class="token operator">&lt;</span>strong <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"copyright"</span><span class="token operator">></span>版权声明：<span class="token operator">&lt;</span><span class="token operator">/</span>strong<span class="token operator">></span>
+        本作品采用
+        <span class="token operator">&lt;</span>a rel<span class="token operator">=</span><span class="token string">"license"</span> href<span class="token operator">=</span><span class="token string">"&lt;%= theme.declare.licensee_url%>"</span> title<span class="token operator">=</span><span class="token string">"&lt;%= theme.declare.licensee_alias %>"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">%</span><span class="token operator">=</span> theme<span class="token punctuation">.</span>declare<span class="token punctuation">.</span>licensee_name<span class="token operator">%</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>a<span class="token operator">></span>
+        许可协议进行许可。转载请注明出处！
+        <span class="token operator">&lt;</span><span class="token operator">%</span> <span class="token keyword">if</span><span class="token punctuation">(</span>theme<span class="token punctuation">.</span>declare<span class="token punctuation">.</span>licensee_img <span class="token operator">!=</span> undefined<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token operator">%</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>br<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">%</span> <span class="token punctuation">}</span> <span class="token operator">%</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">%</span> <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><span class="token operator">%</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"declare"</span> hidden<span class="token operator">=</span><span class="token string">"hidden"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">%</span> <span class="token punctuation">}</span> <span class="token operator">%</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> 添加版权声明》 <span class="token operator">--</span><span class="token operator">></span></code></pre>
+<h3 id="2-在themes-ocean-layout-partial-article-ejs中添加以下代码"><a href="#2-在themes-ocean-layout-partial-article-ejs中添加以下代码" class="headerlink" title="2. 在themes\ocean\layout\_partial\article.ejs中添加以下代码"></a>2. 在<code>themes\ocean\layout\_partial\article.ejs</code>中添加以下代码</h3><pre class=" language-javascript"><code class="language-javascript">    <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> 《添加版权声明 <span class="token operator">--</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">%</span> <span class="token keyword">if</span><span class="token punctuation">(</span>theme<span class="token punctuation">.</span>declare<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token operator">%</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">%</span><span class="token operator">-</span> <span class="token function">partial</span><span class="token punctuation">(</span><span class="token string">'copyright'</span><span class="token punctuation">)</span> <span class="token operator">%</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">%</span> <span class="token punctuation">}</span> <span class="token operator">%</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> 添加版权声明》 <span class="token operator">--</span><span class="token operator">></span></code></pre>
+<ul>
+<li>具体位置是在<code>article-inner</code>的div中的<code>article-entry</code>的div块中，例如我的位置是<img style="align:left" src="https://i.loli.net/2020/04/26/8uFj4Td6xCnrBtf.png" width="70%">
+
+</li>
+</ul>
+<h3 id="3-在themes-ocean-source-css-style-styl中添加："><a href="#3-在themes-ocean-source-css-style-styl中添加：" class="headerlink" title="3. 在themes\ocean\source\css\style.styl中添加："></a>3. 在<code>themes\ocean\source\css\style.styl</code>中添加：</h3><pre class=" language-stylus"><code class="language-stylus">    <span class="token selector">.declare</span>
+        <span class="token property-declaration"><span class="token property">background-color</span> <span class="token hexcode">#eaeaea</span></span>
+        <span class="token property-declaration"><span class="token property">margin-top</span> <span class="token number">5</span>em</span>
+        <span class="token property-declaration"><span class="token property">border-left</span> <span class="token number">3</span>px solid <span class="token hexcode">#ff1700</span></span>
+        <span class="token property-declaration"><span class="token property">padding</span> <span class="token operator">.</span><span class="token number">5</span>em <span class="token number">1</span>em<span class="token punctuation">;</span></span></code></pre>
+<h3 id="4-在主题配置文件themes-ocean-config-yml中添加："><a href="#4-在主题配置文件themes-ocean-config-yml中添加：" class="headerlink" title="4. 在主题配置文件themes\ocean\_config.yml中添加："></a>4. 在主题配置文件<code>themes\ocean\_config.yml</code>中添加：</h3><pre><code>    # 版权声明
+    #在需要进行版权声明的文章的md文件头部，设置属性declare: true。
+    #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明
+    declare:
+    declare_type: 2
+    licensee_url: https://creativecommons.org/licenses/by-nc-sa/4.0/        #当前应用的版权协议地址。
+    licensee_name: &#39;CC BY-NC-SA 4.0&#39;                                        #版权协议的名称
+    licensee_alias: &#39;知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议&#39;       # alias别名
+    licensee_img: https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png    #版权协议的Logo</code></pre><blockquote>
+<p>作者是直接设置的2,表示在所有的文章中都显示版权信息，当然也可全局设置1，然后在每篇文章中单独设置是否显示版权信息。</p>
+</blockquote>
+<ul>
+<li><code>hexo clean &amp; hexo g &amp; hexo s</code></li>
+</ul>
+<h3 id="5-总结："><a href="#5-总结：" class="headerlink" title="5. 总结："></a>5. 总结：</h3><pre><code>* 创建一个copyright.ejs用来渲染前端显示的具体内容
+* 在article.ejs设定copyright.ejs作用位置
+* 在style.styl中设置显示的心态
+* 在`_config.yml`设置版权信息所需要的参数
+    &gt; 纯前端小白简单理解，期望与各路大佬多多交流</code></pre><br>
+<br>
+<br>
+
+<blockquote>
+<p>网络上都是以next的配置为主，但next很多是主题作者预先放置好的，所以作者找到了这篇为yilia添加此功能的，做了微小改动。<br>参考 <a href="https://blog.csdn.net/weixin_42429718/article/details/104262871" target="_blank" rel="noopener">https://blog.csdn.net/weixin_42429718/article/details/104262871</a></p>
+</blockquote>
+
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2021-08-09 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2020-04-30
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/63423.html" title="Hexo+Ocean添加版权说明" target="_blank">Hexo+Ocean添加版权说明</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/63423.html" title="Hexo+Ocean添加版权说明" target="_blank">https://notecc.ink/posts/63423.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/63423.html" data-id="cks5dy1ey001f0w7tb4zz4n0o" class="article-share-link">
+                Compartir
+            </a>
+            
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/60908.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            重写HashCode()
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/26565.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">Hexo+Ocean添加字数统计</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>

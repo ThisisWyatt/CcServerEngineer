@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Linux命令 |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-linux/Linux命令" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      Linux命令
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">1.6k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">6 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/82734d8.html" class="article-date">
+  <time datetime="2020-11-24T15:04:33.000Z" itemprop="datePublished">2020-11-24</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+
+            
+            <p>基础Linux命令</p>
+<a id="more"></a>
+
+
+<h2 id="1-使用命令"><a href="#1-使用命令" class="headerlink" title="1.使用命令"></a>1.使用命令</h2><ol>
+<li><p>详细信息 <code>ls -l</code></p>
+</li>
+<li><p>删除 rm(remove)</p>
+<ul>
+<li>删除文件 <code>rm test.txt</code></li>
+<li>删除文件夹  <code>rm -r dictory</code></li>
+</ul>
+</li>
+<li><p>移动 mv(move)</p>
+<ul>
+<li>改名 <code>mv file1.txt file2.txt</code></li>
+<li>移动 <code>mv workspace/space2/helloworld.txt workspace/space1/helloworld.txt</code></li>
+</ul>
+</li>
+<li><p>复制 cp(copy)</p>
+<ul>
+<li>cp <code>workspace/space2/helloworld.txt workspace/space1/helloworld.txt</code></li>
+</ul>
+</li>
+<li><p>显示文件信息</p>
+<ul>
+<li>显示全部 <code>cat file.txt</code></li>
+<li>查看开头部分<code>head file.txt -n 4</code></li>
+<li>查看结尾部分<code>tail file.txt -n 4</code></li>
+<li>循环读取(每隔10s)动态改变的日志文件<code>tail -f -s 10 file.log</code>,</li>
+<li>暂时少量查看<code>less file.txt</code></li>
+</ul>
+</li>
+<li><p>文件权限     </p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>u(author)</th>
+<th>g(group)</th>
+<th>o(other)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>rw-(可读可写)</td>
+<td>r-x(可读可运行)</td>
+<td>r--(可读)</td>
+</tr>
+<tr>
+<td><!-- gaodafeng shegnxia shegnxiashegnxi youshoushizhi --></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>r : 可读<br>w : 修改、删除<br>x : execute可执行</p>
+</blockquote>
+<ul>
+<li>author限制可读 <code>chmod u-r file.txt</code></li>
+<li>author增加可读 <code>chmod u+r file.txt</code></li>
+<li>group、other限制读<code>chmod go-r file.txt</code></li>
+<li>为所有用户增加可读 <code>chmod a-r file.txt</code></li>
+<li>为所有用户添加所有权限 <code>chmod 777 file.txt</code><blockquote>
+<p><code>rwx rwx rwx</code>二进制 <code>111 111 111</code>, 可利用二进制添加相应的权限</p>
+</blockquote>
+</li>
+</ul>
+<ol start="6">
+<li>设置目录权限</li>
+</ol>
+<ul>
+<li>为user添加/user/local/的权限 chown -R user /usr/local/ </li>
+</ul>
+<ol start="7">
+<li>检索grep</li>
+</ol>
+<ul>
+<li><code>grep keyWord file.txt</code></li>
+<li>配合正则表达式<ul>
+<li><code>grep ^KeyWord file.txt</code></li>
+</ul>
+</li>
+</ul>
+<ol start="8">
+<li><p>统计wc</p>
+<ul>
+<li>统计行数、单词数、字符数<code>wc file.txt</code></li>
+<li>统计byte数<code>wc -c file.txt</code></li>
+<li>统计字符数<code>wc -m file.txt</code></li>
+<li>统计最新的一行的长度<code>wc -l file.txt</code></li>
+<li>统计最长的一行的长度<code>wc -L file.txt</code></li>
+<li>统计单词个数 <code>wc -w file.txt</code></li>
+</ul>
+</li>
+<li><p><a href="https://www.linuxprobe.com/linux-cat-system.html" target="_blank" rel="noopener">查看系统信息</a></p>
+<ul>
+<li>lsb_release -a <blockquote>
+<p>Linux Standard Base</p>
+</blockquote>
+</li>
+<li>cat /etc/os-release</li>
+</ul>
+</li>
+<li><p>[查看是否安装某个软件]</p>
+<ul>
+<li>Ubuntu <code>dpkg -s &quot;软件或包的名字&quot;</code></li>
+<li>CentOS <code>rpm -qa | grep &quot;软件或者包的名字&quot;</code><blockquote>
+<p><code>rpm: redhat package manager; -q: query; a: all</code> </p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>查看网络活动相关信息</p>
+<ul>
+<li><p><code>netstat -nptl</code> </p>
+<blockquote>
+<p>connetction、tcp、programs、listening </p>
+</blockquote>
+<pre class=" language-ini"><code class="language-ini"><span class="token selector">  [root@cloudr etc]</span># netstat -h
+  -r, --route              display routing table
+  -I, --interfaces<span class="token attr-value"><span class="token punctuation">=</span>&lt;Iface> display interface table for &lt;Iface></span>
+  -i, --interfaces         display interface table
+  -s, --statistics         display networking statistics (like SNMP)
+  -M, --masquerade         display masqueraded connections
+
+  -v, --verbose            be verbose //详细的
+  -e, --extend             display other/more information
+  -p, --programs           display PID/Program name for sockets    //PID、程序名
+  -o, --timers             display timers
+  -c, --continuous         continuous listing
+
+  -l, --listening          display listening server sockets //监听中的套接口
+  -a, --all                display all sockets (default: connected)
+  -F, --fib                display Forwarding Information Base (default)
+  -C, --cache              display routing cache instead of FIB
+  -Z, --context            display SELinux security context for sockets
+
+  -t, --tcp    //tcp相关
+  -u, --udp    //udp相关
+  -U, --udplite
+  -w, --raw     //原始
+  -x, --unix    //unix相关</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="2-用户和工作组管理类命令"><a href="#2-用户和工作组管理类命令" class="headerlink" title="2.用户和工作组管理类命令"></a>2.用户和工作组管理类命令</h2><h3 id="2-1-查看用户"><a href="#2-1-查看用户" class="headerlink" title="2.1 查看用户"></a>2.1 查看用户</h3><ul>
+<li>查看用户信息命令 <code>id</code></li>
+<li>显示用户名称命令 <code>logname</code></li>
+<li>查看用户操作命令 <code>history</code><ul>
+<li>执行第几条命令 <code>!数字</code> </li>
+</ul>
+</li>
+<li>查看用户所属用户组 <code>groups</code><h3 id="2-2-用户组管理"><a href="#2-2-用户组管理" class="headerlink" title="2.2 用户组管理"></a>2.2 用户组管理</h3></li>
+<li>查看所有用户组命令 <code>cat /etc/group</code></li>
+<li>创建一个用户组命令 <code>groupadd 用户组名</code> </li>
+<li>删除一个用户组命令 <code>groupdel 用户名</code></li>
+<li>更改用户组名命令 <code>groupmod 新用户组名 旧用户组名</code></li>
+<li>添加用户到用户组 <code>usermode -a -G groupName userName</code><blockquote>
+<p>-a : appened，不能直接-G，否则会离开原有用户组</p>
+</blockquote>
+<h3 id="2-3-用户管理"><a href="#2-3-用户管理" class="headerlink" title="2.3 用户管理"></a>2.3 用户管理</h3></li>
+<li>查看当前登录用户名命令 <code>w、who、users、whoami</code></li>
+<li>切换用户 <code>su [选项] 目标用户</code></li>
+<li>新增用户账号 <code>useradd 用户名</code></li>
+<li>删除用户账号 <code>userdel 用户名</code><ul>
+<li>强制删除<code>userdel -f 用户名</code> </li>
+<li>删除用户的同时，删除与用户相关的所有文件 <code>userdel -r 用户名</code></li>
+</ul>
+</li>
+<li>为用户设置口令 <code>passwd 用户名</code></li>
+<li>查看用户所属组命令 <code>groups 用户名</code></li>
+<li>变更用户账号信息命令 <code>usermod [选项] 用户名</code></li>
+</ul>
+<h3 id="2-4-用户权限管理"><a href="#2-4-用户权限管理" class="headerlink" title="2.4 用户权限管理"></a>2.4 用户权限管理</h3><p>普通用户如何获得root权限</p>
+<ul>
+<li>用户使用sudo命令并输入口令<br>在文件/etc/sudoers第100行后添加<code>username  ALL=(ALL)   ALL</code>后保存修改，执行命令时输入当前用户口令，即可执行root权限</li>
+<li>用户组使用sudo命令并输入口令<br>在文件/etc/sudoers第100行后添加<code>%groupname  ALL=(ALL)   ALL</code>后保存修改，执行命令时输入当前用户口令，即可执行root权限</li>
+<li>用户使用sudo命令并（不需要输入口令）<br>在文件/etc/sudoers第100行后添加<code>username  ALL=(ALL)   NOPASSWD: ALL</code>后保存修改，执行命令时输入当前用户口令，即可执行root权限</li>
+<li>用户组使用sudo命令并（不需要输入口令）<br>在文件/etc/sudoers第100行后添加<code>%groupname  ALL=(ALL)   NOPASSWD: ALL</code>后保存修改，执行命令时输入当前用户口令，即可执行root权限</li>
+</ul>
+<ul>
+<li><p>显示当前挂载在Linux系统的每个分区 df</p>
+<ul>
+<li><code>df -h</code> 将分区小转换为用户可读的形式</li>
+</ul>
+</li>
+<li><p>查看文件大小</p>
+<ul>
+<li><code>ll -h</code> h: human-readable</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>归档命令<code>tar</code></p>
+<ul>
+<li><p><code>tar -cvf testTar.tar *</code></p>
+<ul>
+<li>c –create: 创建一个新的归档文件</li>
+<li>v –verbose: 显示已处理文件</li>
+<li>f –file=ARCHIVE: 指向归档文件的名字</li>
+</ul>
+</li>
+<li><p><code>tar -cvzf testTar.tar.gz *</code></p>
+<ul>
+<li>z –zip: 压缩归档文件 </li>
+</ul>
+</li>
+<li><p><code>tar -xvzf testTar.tar.gz</code></p>
+<ul>
+<li>x –extract : 提取（解压）</li>
+</ul>
+</li>
+<li><p><code>tar czvf - importantstuff/ | ssh useranme@10.0.0.123  &quot;cat &gt; /home/username/myfiles.tar.gz</code> ： 归档importantstuff目录下的文件至10.0.0.123主机的/home/username/myfile.tar.gz文件</p>
+<ul>
+<li>- : 该连接符表示将数据输出到标准标准的输出设备上，这允许将归档文件文件名的详细信息推后至该命令的末尾。</li>
+<li>| : 管道，将这个未命名的、压缩的归档文件传输至远程服务器的ssh登陆    </li>
+<li>“cat &gt; /home/username/myfiles.tar.gz” : 键入内容至myfiles.tar.gz(覆盖)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>文件分割 split</p>
+<ul>
+<li><code>split -4 README.md</code>: 将README.md文件每4行分割为以x开头的文件,例如xaa、xab、xac；</li>
+<li><code>split 2KB README.md REAME.md.part</code>: 将README.md分割为以REAMD.md.part开头的文件，例如REAME.md.part.aa、REAME.md.part.ab</li>
+</ul>
+</li>
+<li><p>搜索文件命令locate</p>
+<ul>
+<li><p><code>locate *.mp4</code></p>
+<blockquote>
+<p>locate命令并非真正地文件系统本身，而是在一个已存在的索引中进行简单的搜索，但是该索引<strong>并不是实时性的</strong>，默认是在系统每次启动时自动更新，所以会因为索引过时时搜索不到文件，使用<code>updatedb</code>命令更新.<br></p>
+</blockquote>
+<blockquote>
+<p>centos安装命令<code>sudo yum install mlocate</code></p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>指定目录下查找文件find</p>
+<ul>
+<li><code>find readme.md</code> : 在当前目录下查找文件名为readme.md的文件（默认为当前目录下查找）</li>
+<li><code>find /home/cc1/dd/ -iname &quot;*.java&quot; -exec tar -rvf javaZip.tar {} \;</code><ul>
+<li>-exec: shell的内建命令，在当前shell下用exec后面的命令替换掉当前执行的进程，并将老进程的环境清除掉。</li>
+<li>-iname: 忽略名字字母大小写查找</li>
+<li>{}: 告诉find命令，对于每个查找到的文件执行官exec后面的命令</li>
+<li>\;: 格式，必须 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://www.cnblogs.com/zox2011/archive/2013/05/28/3103824.html" target="_blank" rel="noopener">https://www.cnblogs.com/zox2011/archive/2013/05/28/3103824.html</a></p>
+
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2020-11-24 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2021-07-23
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/82734d8.html" title="Linux命令" target="_blank">Linux命令</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/82734d8.html" title="Linux命令" target="_blank">https://notecc.ink/posts/82734d8.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/82734d8.html" data-id="cks5dy1f6001w0w7t0jk1828w" class="article-share-link">
+                Compartir
+            </a>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/341ecd43.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            Git
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/fe3b56f6.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">【转载】BlockingQueue</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>

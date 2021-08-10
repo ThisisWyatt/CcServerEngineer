@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    进程与线程 |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-code/OS/进程同步与通信" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      进程与线程
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">4.1k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">13 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/eefe591f.html" class="article-date">
+  <time datetime="2020-07-16T11:10:10.000Z" itemprop="datePublished">2020-07-16</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+
+            
+            <p>为了有效地管理CPU,操作系统引入了线程的概念，即以进程为基本单位来实现CPU的分配与执行。随着并行处理技术的发展，为了进一步提高系统的并行性，实现进程内部的并发执行，操作系统又引入了线程的概念。这样，CPU的管理最终归结于对进程和线程的管理。<br><img src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/img/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B.png" alt="进程与线程"></p>
+<a id="more"></a>
+
+<h1 id="一、进程"><a href="#一、进程" class="headerlink" title="一、进程"></a>一、进程</h1><p>程序是一个在时间方向上严格按照先后次序实现算法功能的指令序列。</p>
+<h2 id="1-1-程序的顺序执行和并发执行"><a href="#1-1-程序的顺序执行和并发执行" class="headerlink" title="1.1 程序的顺序执行和并发执行"></a>1.1 程序的顺序执行和并发执行</h2><h3 id="1-1-顺序执行"><a href="#1-1-顺序执行" class="headerlink" title="1.1 顺序执行"></a>1.1 顺序执行</h3><p>一个具有独立功能的程序独占CPU运行，直到获得最终结果的过程。</p>
+<ul>
+<li><strong>顺序性</strong>。 每个操作都必须在前一个操作结束后才能开始</li>
+<li><strong>封闭性</strong>。 程序一旦开始运行，其运行结果不会受到外界因素的影响</li>
+<li><strong>可再现性</strong>。 程序运行结果仅由初始结果和程序本身的操作决定</li>
+</ul>
+<h3 id="1-1-2-并发执行"><a href="#1-1-2-并发执行" class="headerlink" title="1.1.2 并发执行"></a>1.1.2 并发执行</h3><p>在计算机引入<strong>通道和中断</strong>机制后，就使得CPU和外部设备之间，以及外部设备与外部设备之间可以并行操作，使得多道程序设计成为可能。      </p>
+<p>在同一时刻，有的程序占用CPU运行，有的程序通过外部设备传递数据。<strong>从宏观上看是多个设备同时运行，从微观上来看它们是在交替运行。</strong></p>
+<p>因此，程序并发执行环境下的计算机资源，已不再被某一个用户程序所独占，而是由多个并发执行的程序所共享。虽然提高了资源的利用率，但在另外一方面却<strong>引发了多个并发程序对资源的竞争导致了程序执行环境与运行速度的改变，从而可能产生程序运行结果不唯一的情况。</strong></p>
+<ul>
+<li><strong>间断性</strong></li>
+<li><strong>无封闭性</strong></li>
+<li><strong>不可再现性</strong></li>
+</ul>
+<hr>
+<br>
+
+<h2 id="1-2-进程的定义"><a href="#1-2-进程的定义" class="headerlink" title="1.2 进程的定义"></a>1.2 进程的定义</h2><p><strong>程序的一个动态执行过程</strong></p>
+<p>结构：<br>进程实体=程序段+相关数据段+PCB(进程控制块) </p>
+<h2 id="1-4-进程的特点"><a href="#1-4-进程的特点" class="headerlink" title="1.4 进程的特点"></a>1.4 进程的特点</h2><ul>
+<li>动态性。 进程具有生命期，具有“创建-运行-消亡”这样一个过程</li>
+<li>并发性。 多个进程能够在一段时间内并发执行</li>
+<li>独立性。 每个进程都是一个独立运行的基本单位，也是<strong>系统进行资源分配和调度的基本单位</strong></li>
+<li>异步性。 任何时刻只能有一个进程占用CPU，具有“执行-暂停-执行”这种间断性规律</li>
+<li>结构性。 由程序段、相关数据段、PCB三部分组成</li>
+</ul>
+<hr>
+<br>
+
+<h2 id="1-5-进程和程序的区别"><a href="#1-5-进程和程序的区别" class="headerlink" title="1.5 进程和程序的区别"></a>1.5 进程和程序的区别</h2><p><strong>程序像是一个乐谱</strong>，任何时候都可以翻阅它，但乐谱本身是静态的。<br><strong>进程则可以看做是乐谱的一次演奏</strong>，具有生命周期，并随着时间的流逝，演奏的音乐将不复存在，即使是重现演奏这个乐谱，也不是刚刚逝去的那段音乐。</p>
+<p>同一程序的不同进程，则像是同卵双胞胎的不同人生。</p>
+<p><strong>程序和进程并无一一对应关系</strong>。同一程序可以产生多个进程，一个进程也可包含多个程序。</p>
+<hr>
+<br>
+
+<h2 id="1-6-进程的状态及转换"><a href="#1-6-进程的状态及转换" class="headerlink" title="1.6 进程的状态及转换"></a>1.6 进程的状态及转换</h2><p><img src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/img/%E8%BF%9B%E7%A8%8B%E4%BA%94%E7%8A%B6%E6%80%81%E6%A8%A1%E5%9E%8B.png" alt="进程五状态模型"></p>
+<ol>
+<li><p>新建<br> 当需要创建一个新进程时，系统为该进程分配一个进程控制块PCB，并为该进程分配内存空间，且装入该进程对应的程序和有关数据。</p>
+</li>
+<li><p>就绪<br> <strong>进程得到除了CPU之外的所需资源，一旦得到CPU资源既可以立即投入运行</strong>。</p>
+</li>
+<li><p>运行<br> 进程获得了CUP和其他所需要的资源，目前正在CPU上运行</p>
+</li>
+<li><p>阻塞<br> <strong>进程 运行 过程中发生了某种等待事件（比如发生了I/O操作）而暂时不能运行的状态</strong>。即使把CPU资源分配给它也不能够运行。</p>
+</li>
+<li><p>结束<br> 系统逐步释放为为其分配的资源，最后释放其PCB.</p>
+</li>
+</ol>
+<blockquote>
+<p>核心的三状态就比如一个游乐场，一群小朋友进入游乐场排序玩一个滑梯     </p>
+<ul>
+<li>排队的小朋友就处于就绪转态    </li>
+<li>玩滑梯的那一个小朋友就处于运行状态    </li>
+<li>每个小朋友只能玩5分钟，时间到了就得重新排序    </li>
+<li>如果小朋友<strong>在玩滑梯的过程中</strong>需要上厕所，那么上厕所的过程就是阻塞状态，上厕所结束后则需要重新排队（就绪）</li>
+</ul>
+</blockquote>
+<br>
+
+<p><img src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/img/%E4%B8%83%E7%8A%B6%E6%80%81%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B.png" alt="七状态进程模型"></p>
+<p>上面的5状态进程模型中，新创建的进程一旦被系统接纳都一直存在于内存中，直到被终止。在这种情况下，<strong>系统内存资源会变得越来越紧张</strong>，此外由于CPU速度远超于I/O等操作速度，<strong>内存中就会存在大多数进程等待I/O操作而CPU空闲的现象</strong>。为此可以采用交换技术，将内存中暂时不能运行的某些进程挂起，释放所占用的内存资源，以便于重新接纳一个新进程或外存上已具备运行条件的进程进入内存就绪队列。<strong>进程挂起即将内存中的进程暂时移出到外存（如磁盘）中的过程。</strong></p>
+<blockquote>
+<p>现代操作系统只是将进程的某些页放到外存上去</p>
+</blockquote>
+<p><br><br></p>
+<hr>
+<p><br><br></p>
+<h1 id="二、进程同步与通信"><a href="#二、进程同步与通信" class="headerlink" title="二、进程同步与通信"></a>二、进程同步与通信</h1><h2 id="2-1-进程的同步与互斥"><a href="#2-1-进程的同步与互斥" class="headerlink" title="2.1 进程的同步与互斥"></a>2.1 进程的同步与互斥</h2><h3 id="2-1-1-进程同步"><a href="#2-1-1-进程同步" class="headerlink" title="2.1.1 进程同步"></a>2.1.1 进程同步</h3><p>某些进程之间在逻辑上的相互制约关系，即若干进程为了完成某一个共同任务和相互合作。</p>
+<h3 id="2-1-2-进程互斥"><a href="#2-1-2-进程互斥" class="headerlink" title="2.1.2 进程互斥"></a>2.1.2 进程互斥</h3><p>某一资源同一时间只允许一个进程对其访问，这种访问具有唯一性和排他性。</p>
+<hr>
+<br>
+
+<h2 id="2-2-临界资源和临界区"><a href="#2-2-临界资源和临界区" class="headerlink" title="2.2 临界资源和临界区"></a>2.2 临界资源和临界区</h2><p>系统中同时存在着许多进程，它们共享着各种资源。然而许多资源在某一时刻只能允许一个进程使用，如打印机，磁带机等硬件设备，软件中的变量、队列等数据结构。如果多个进程同时使用这类资源就会造成混乱。因此必须保护这些资源，避免两个或多个进程同时访问这些资源。</p>
+<p><strong>把同一时刻只允许一个进程使用的资源成为临界资源。</strong></p>
+<p>对临界资源的访问必须互斥进行，即各个进程对同一临界资源进行先从操作的程序段也应互斥进行，只有这样才能保证对临界资源的互斥访问。<strong>把进程中访问临界资源的代码称为临界区。</strong></p>
+<p>对于临界资源的访问必须互斥进行，<strong>所以进程在进入临界区时首先判断是否有其他进程在使用此临界资源，如果有，则该进程必须等待；如果没有，则该进程才能进入临界区执行临界区代码，同时还要关闭临界区以防止其他进程进入。当进程使用完临界资源时，要开放临界区以便其他进程进入。</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/img/%E4%B8%B4%E7%95%8C%E5%8C%BA%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84.png" alt=""></p>
+<hr>
+<br>
+
+<h2 id="2-3-实现进程互斥的硬件方法"><a href="#2-3-实现进程互斥的硬件方法" class="headerlink" title="2.3 实现进程互斥的硬件方法"></a>2.3 实现进程互斥的硬件方法</h2><h3 id="2-3-1-开关中断指令"><a href="#2-3-1-开关中断指令" class="headerlink" title="2.3.1 开关中断指令"></a>2.3.1 开关中断指令</h3><p>又称硬件锁，进程在进入临界区之前，先执行“关中断”指令来屏蔽掉所有中断，进程完成所有临界区的任务后，再执行“开中断”指令将中断打开。</p>
+<p>开关中断时间过长会导致系统效率降低。</p>
+<h3 id="2-3-2-测试与设置指令"><a href="#2-3-2-测试与设置指令" class="headerlink" title="2.3.2 测试与设置指令"></a>2.3.2 测试与设置指令</h3><p>为每一个临界资源设置一个整型变量s，若s为0，则表示没有进程访问该临界资源，若s为1则表示该临界资源已经被某个进程占用。</p>
+<p>利用TS指令可以实现临界区的开锁和关锁原语操作，进入临界区之前先使用TS指令测试s，若s为0则表明没有进程使用临界资源，于是本进程进入临界区，<strong>否则必须循环测试直至s的值为0</strong>。</p>
+<blockquote>
+<p>原语：一般是指由若干条指令组成的程序段，用来实现某个特定功能，在执行过程中不可被中断。（原子操作）</p>
+</blockquote>
+<h3 id="2-3-3-交换指令"><a href="#2-3-3-交换指令" class="headerlink" title="2.3.3 交换指令"></a>2.3.3 交换指令</h3><p>若要使用交换指令来实现进程互斥，则需要为每个临界资源设置一个整型变量s，若s为0，则表示没有进程访问该临界资源，若s为1则表示该临界资源已经被某个进程占用。此外，还有设置一个整型局部变量key,只有当s为0且key为1时，进程才能进入临界区，进入临界区后，s的值为1且key的值为0。</p>
+<p>TS和SWAP指令都能方便地实现进程互斥，但都存在过多循环测试s的值而引起的系统资源消耗问题。</p>
+<hr>
+<br>
+
+<h2 id="2-4-实现进程互斥的软件方法"><a href="#2-4-实现进程互斥的软件方法" class="headerlink" title="2.4 实现进程互斥的软件方法"></a>2.4 实现进程互斥的软件方法</h2><h3 id="2-4-1-两标志进程互斥算法"><a href="#2-4-1-两标志进程互斥算法" class="headerlink" title="2.4.1 两标志进程互斥算法"></a>2.4.1 两标志进程互斥算法</h3><p>不能很好解决两个进程同时到达的问题</p>
+<h3 id="2-4-2-三标志进程互斥算法"><a href="#2-4-2-三标志进程互斥算法" class="headerlink" title="2.4.2 三标志进程互斥算法"></a>2.4.2 三标志进程互斥算法</h3><p>扩展性较差，进程一多久复杂了，效率变低</p>
+<hr>
+<br>
+
+<h2 id="2-5-信号量机制"><a href="#2-5-信号量机制" class="headerlink" title="2.5 信号量机制"></a>2.5 信号量机制</h2><p>在操作系统中，信号量代表了一类物理资源，它是相应物理资源的抽象。具体实现时，信号量被定义为具有某种类型的变量，通常为整型或者其他结构体类型。</p>
+<p><strong>value变量</strong>：<br>value的初值是一个非负整数，代表着系统中某类资源的数量，随着该资源的不断被分配，value的值也随之发生变化，会出现以下三种情况：</p>
+<ul>
+<li>value&gt;0，代表该类资源当前的可用数量  </li>
+<li>value=0，表示该资源为空</li>
+<li>value&lt;0，<strong>其绝对值代表因等待该资源而阻塞的进程数量</strong></li>
+</ul>
+<p><strong>P操作（发信号）</strong>：</p>
+<ul>
+<li>执行一此P操作就相当于申请一个资源S<ul>
+<li>若S&gt;0，则意味着系统中有可用资源S,并将其分配，且将S的资源可用数量value减1</li>
+<li>若S&lt;=0，表示当前系统已无资源S可用，立即将当前运行进程阻塞起来，并插入到S.L的进程阻塞队列中去</li>
+</ul>
+</li>
+</ul>
+<p><strong>V操作（等待）</strong>：</p>
+<ul>
+<li>执行一次V操作相当于释放一个资源S,将资源S的value值加1</li>
+<li>若S.value加1后其值仍小于等于0，则表明仍有处于阻塞状态的进程在等待资源S，于是将S.L所指进程阻塞队列中的第一个阻塞进程唤醒并将刚刚回收的资源S分配给它。</li>
+</ul>
+<p>P、V信号量<strong>解决了进程主动进行循环测试消耗系统资源的问题</strong>。因为这种协调的本质是当出现资源竞争的冲突时，就将原来并发执行的多个进程在P、V操作的协调下变为<strong>依次顺序执行</strong>，<strong>当资源冲突结束后又恢复为并发执行。</strong></p>
+<p><br><br></p>
+<hr>
+<p><br><br></p>
+<h1 id="三、线程"><a href="#三、线程" class="headerlink" title="三、线程"></a>三、线程</h1><p>进程就如我们在一台旧电视上看节目，如果两个频道正在直播不同的精彩节目，我们只能在这两个频道之间来回切换选择观看的内容（相当于进程的切换）。这就是进程的缺点，<strong>它在一个时间段内只能做一件事情</strong>，如果想要同时做两件或者多件事情，进程就不够用了。此外，如果<strong>进程在执行过程中因等待输入输入数据而阻塞</strong>，且这时进程还有一些不依赖于输入的其他工作可以做，但由于进程的阻塞而无法进行。</p>
+<p>线程就是为了解决上述两个缺陷而解决的，例如<strong>新电视可以将两个频道或多个频道同时显示在同一块屏幕上</strong>（分屏），这就是线程的方式。例如<strong>使用WPS时，实际上是打开了多线程，一个线程负责显示，一个线程负责输入，一个线程负责定时存盘……</strong> 这些线程一起运转，使我们觉得输入和显示同时发生，而不是键入一些文字，等待一会儿再显示到屏幕上。</p>
+<blockquote>
+<p>多线程，在一个口罩工厂中建立多个生产线生产口罩 （一个进程内的多个线程）</p>
+</blockquote>
+<blockquote>
+<p>并行：同一时刻，多个执行流都拥有一个CPU同时在计算<br>并发：多个执行流，每个执行流独占CPU一会儿进行计算，按照时间片轮转法分配运行时间</p>
+</blockquote>
+<h2 id="3-1-线程的引入"><a href="#3-1-线程的引入" class="headerlink" title="3.1 线程的引入"></a>3.1 线程的引入</h2><p>在操作系统中引入进程后，使得原来不能并发执行的程序变成能够并发执行的进程，从而改善了资源的利用率和系统吞吐量。此时，<strong>进程既是资源分配的基本单位，也是独立调度、独立运行的基本单位。</strong></p>
+<p>然而，正是由于进程扮演了这两种角色，导致了<strong>进程的并发执行产生了很大的时空开销</strong>，因为他要完成如下操作：     </p>
+<ol>
+<li>创建进程</li>
+<li>进程切换</li>
+<li>撤销进程</li>
+</ol>
+<p>上述操作占用不少的CPU资源（尤其是进程切换），为此有一个想法是<strong>将进程承担的两个角色分开</strong>。</p>
+<p>此外，多CPU的计算机系统的出现，对于<strong>原有的进程执行方式增加CPU并不能提高一个进程的执行效率。</strong>  <strong><em>将一个进程分解为多个线程，这样就可以让多个线程同时运行在不同的CPU上。</em></strong> 此时，<em>线程是CPU调度和执行的最小单元</em></p>
+<hr>
+<p><br><br></p>
+<h2 id="3-2-线程的定义"><a href="#3-2-线程的定义" class="headerlink" title="3.2 线程的定义"></a>3.2 线程的定义</h2><ul>
+<li>进程内的一个执行单元</li>
+<li>进程内的一个可独立调度的实体</li>
+<li>进程内的一个相对独立的控制流序列</li>
+<li>执行的上下文</li>
+</ul>
+<p>属性：</p>
+<ul>
+<li>线程属于轻型实体，<strong>基本不拥有系统资源</strong></li>
+<li><strong>线程是独立调度和分配的基本单位，也是能够独立运行的基本单位</strong></li>
+<li>同一个进程的所有线程共享该进程的所拥有的全部资源</li>
+<li>线程的并发执行程度高，<strong>不但同一进程的多个线程可以并发执行，甚至属于不同进程的多个线程也可以并发执行</strong></li>
+</ul>
+<p>与进程类似，线程也有生命周期，也存在 执行、就绪和阻塞这三种基本状态，这是因为线程完全继承了进程的运行属性，因此<strong>线程的三种状态含义和转换关系与进程相同</strong>。由于线程不是资源的拥有单位，因此<strong>挂起状态对单个线程没有意义</strong>。</p>
+<p>在多线程操作系统中，为了使并发的多个线程能够有条不紊地运行，操作系统必须提供用于线程间互斥和同步的机制：</p>
+<ul>
+<li><strong>互斥锁</strong>，每次只允许一个线程来执行特定的代码或访问特定的数据。</li>
+<li><strong>读写锁</strong>，对受保护的共享资源进行并发读取和独占写入。</li>
+<li><strong>条件变量</strong>，一直阻塞线程，直到特定的条件为真。 </li>
+<li><strong>奇数信号量</strong>，用来协调对资源的访问，达到指定的计数时信号将阻塞。</li>
+</ul>
+<hr>
+<p><br><br></p>
+<h2 id="3-3-线程与进程"><a href="#3-3-线程与进程" class="headerlink" title="3.3 线程与进程"></a>3.3 线程与进程</h2><p>线程有由于有很多进程的特性，因此有人将它称为轻量级进程，而将传统进程称为重量级进程。</p>
+<p>差异：</p>
+<ul>
+<li>新建、切换和撤销一个线程所花费的时空消耗远小于新建、切换和撤销一个进程的时空开销</li>
+<li>进程是资源分配的最小单元，而线程不是，同一进程的多个线程可以共享资源</li>
+</ul>
+<p><br><br><br></p>
+<hr>
+<p><br><br><br></p>
+<p><strong>参考</strong><br>[1]胡元义,黑新宏.操作系统原理. 北京: 电子工业出版社, 2018.<br>[2]<a href="https://blog.csdn.net/jinixin/article/details/90345661" target="_blank" rel="noopener">https://blog.csdn.net/jinixin/article/details/90345661</a></p>
+
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2020-07-16 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2020-12-20
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/eefe591f.html" title="进程与线程" target="_blank">进程与线程</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/eefe591f.html" title="进程与线程" target="_blank">https://notecc.ink/posts/eefe591f.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/eefe591f.html" data-id="cks5dy1gt00600w7t8k9w2yw0" class="article-share-link">
+                Compartir
+            </a>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/" rel="tag">OS</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/51267ed9.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            【转载】java按位与、按位或、异或、移位、按位非
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/baafd636.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">JVM学习笔记(四)——Java内存模型和线程安全</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>

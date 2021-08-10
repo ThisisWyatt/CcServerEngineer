@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    JavaSE容器 |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-code/JavaSE/JavaSE容器" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      JavaSE容器
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">1.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">6 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/6ea65bec.html" class="article-date">
+  <time datetime="2020-04-30T11:42:10.000Z" itemprop="datePublished">2020-04-30</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+  <div class="article-gallery">
+    <div class="article-gallery-photos">
+      
+        
+          <img src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/img/121212java.jpg" itemprop="image">
+        
+      
+    </div>
+  </div>
+
+
+            
+            <p>❄</p>
+<a id="more"></a>
+
+
+<blockquote>
+<p>➱<a href="https://www.cnblogs.com/daimasanjiaomao/p/11005764.html➲" target="_blank" rel="noopener">https://www.cnblogs.com/daimasanjiaomao/p/11005764.html➲</a><br></p>
+</blockquote>
+<p>Java容器主要包括 Collection 和 Map 两种，Collection 存储着对象的集合，而 Map 存储着键值对（两个对象）的映射表。</p>
+<h3 id="常用容器目录"><a href="#常用容器目录" class="headerlink" title="常用容器目录"></a>常用容器目录</h3><p><img src="https://img-blog.csdnimg.cn/20190317184953342.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NoYWRvd196ZWQ=,size_16,color_FFFFFF,t_70" alt="常用容器目录"></p>
+<hr>
+<h3 id="Collection和Collections的区别"><a href="#Collection和Collections的区别" class="headerlink" title="Collection和Collections的区别"></a>Collection和Collections的区别</h3><ul>
+<li>Collection是<strong>集合类的上层接口</strong>，继承他的接口主要有Set和List</li>
+<li>Collections是针对于集合类的一个<strong>帮助类</strong>，他提供了一系列的静态方法实现对集合的搜索、排序、线程安全化等操作。 </li>
+</ul>
+<hr>
+<h3 id="map的分类和常见的情况"><a href="#map的分类和常见的情况" class="headerlink" title="map的分类和常见的情况"></a>map的分类和常见的情况</h3><ul>
+<li>java.util.Map接口主要用于存储键值对，根据键得到值，<strong>因此不允许键重复，但允许值重复</strong>，它有四个实现类：<ul>
+<li>Hashmap:根据键的hashCode值存储数据，具有很快的访问速度，<strong>遍历时，具有很快的访问速度，但取得的速度是随机的。Hashmap不支持线程的同步</strong>,多个线程同时读取会导致数据的不一致，<strong>若需要同步，可以使用Collections的synchronizedMap()方法使Hashmap具有同步能力或者使用ConcurrentHashMap</strong>.<ul>
+<li>ConcurrentHashMap分段锁</li>
+<li>HashMap允许任何类型的键和值对象，并<strong>允许将null用作键或值</strong></li>
+</ul>
+</li>
+<li>Hashtable与HashMap类似，不同的是<strong>它不允许记录的键或值为空，它支持线程同步</strong>， 即任何时候只有一个线程能写Hashtable但也因此<strong>导致了hashtable访问较慢</strong>。</li>
+<li>LinkedHashMap是Hashmap的一个子类，<strong>保存了记录的插入顺序，用iterator遍历时先得到的记录肯定是先插入的。遍历速度比HashMap慢</strong>，除非HashMap容量很大但实际数据较少。</li>
+<li>TreeMap实现的是SortMap接口，<strong>能够把它保存的记录按照键排序</strong>，用iterator遍历的数据是排过序的。<ul>
+<li>TreeMap的实现底层实现<strong>基于二叉树的红黑树</strong>，插入的值是按一定顺序排序的。<blockquote>
+<p>一般情况下，用的最多的是HashMap，用它插入，删除，定位是最好的选择。但如果按照自然顺序或按照自定义顺序，TreeMap更好，如果要输入输出顺序一样，LinkedHashMap更好。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>HashMap的实现原理<ul>
+<li>HashMap概述： HashMap是基于哈希表的Map接口的非同步实现。此实现提供所有可选的映射操作，并允许使用null值和null键。此类不保证映射的顺序，特别是它不保证该顺序恒久不变。<br><br>HashMap的数据结构： <strong>在java编程语言中，最基本的结构就是两种，一个是数组，另外一个是模拟指针（引用）</strong>，所有的数据结构都可以用这两个基本结构来构造的，HashMap也不例外。HashMap实际上是一个“<strong>链表散列</strong>”的数据结构，即数组和链表的结合体。<br><br>当我们往Hashmap中put元素时,<strong>首先根据key的hashcode重新计算hash值,根绝hash值得到这个元素在数组中的位置(下标),如果该数组在该位置上已经存放了其他元素,那么在这个位置上的元素将以链表的形式存放,新加入的放在链头,最先加入的放入链尾.如果数组中该位置没有元素,就直接将该元素放到数组的该位置上。</strong><br><br>需要注意Jdk 1.8中对HashMap的实现做了优化,当链表中的节点数据超过八个之后,该链表会转为红黑树来提高查询效率,从原来的O(n)到O(logn)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet"></a>HashSet</h3><ul>
+<li>实现原理<ul>
+<li>HashSet底层由HashMap实现，HashSet的值存放于HashMap的Key上，HashMap的<strong>value统一为PRESENT</strong></li>
+</ul>
+</li>
+<li>特性<ul>
+<li>它存储<strong>唯一</strong>元素并<strong>允许空值</strong></li>
+<li>它由HashMap支持</li>
+<li>它<strong>不保持插入顺序</strong></li>
+<li>它<strong>不是线程安全</strong>的</li>
+</ul>
+</li>
+<li>API<ul>
+<li>add():可用于<strong>将元素添加到一组</strong>。方法声明只有当元素尚未存在于集合中时才会添加元素。如果成功添加了元素，则该方法返回true，否则返回false。</li>
+<li>contains():目的是<strong>检查给定HashSet中是否存在元素</strong>。如果找到该元素，则返回true，否则返回false。</li>
+<li>remove():如果存在，该方法将从集合中<strong>删除指定的元素</strong>。如果集合包含指定的元素，则此方法返回true。</li>
+<li>clear():当我们打算从集合中<strong>删除所有项目时</strong>，我们使用此方法。底层实现只是清除底层HashMap中的所有元素。</li>
+<li>size():这是API中的基本方法之一。它被大量使用，因为它有助于识别HashSet中存在的元素数量。底层实现只是将计算委托给HashMap的size（）方法。</li>
+<li>isEmpty():我们可以使用此方法来确定<strong>HashSet的给定实例是否为空</strong>。如果集合不包含任何元素，则此方法返回true</li>
+<li>Iterator():该方法返回Set中元素的<strong>迭代器</strong>。这些元素<strong>没有特定的顺序</strong>访问，Iterator是fail-fast的。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="数组-Array-和列表-ArrayList-的区别"><a href="#数组-Array-和列表-ArrayList-的区别" class="headerlink" title="数组(Array)和列表(ArrayList)的区别"></a>数组(Array)和列表(ArrayList)的区别</h3><ul>
+<li><strong>Array可以包含基本类型或者对象类型，Arraylist只能包含对象类型；</strong></li>
+<li>Array大小是固定对的，ArrayList不是。</li>
+<li>对于基本数据类型，Array使用自动装箱来减少编码工作量，但当处理固定大小的基本上数据类型时这种方式较慢。</li>
+</ul>
+<hr>
+<h3 id="ArrayList、LinkedList和Vector"><a href="#ArrayList、LinkedList和Vector" class="headerlink" title="ArrayList、LinkedList和Vector"></a>ArrayList、LinkedList和Vector</h3><ul>
+<li><p>ArrayList和LinkedList最明显的区别是ArrayList的底层数据结构是<strong>数组，支持随机访问，因此插入慢，读取快</strong>。而LinkedList的底层数据结构是<strong>双向循环链表，不支持随机访问,因此写入块，读取慢</strong>，Array的时间复杂度是O(1),LinkedList是O(n);</p>
+<blockquote>
+<p>随机访问只是读取时索引顺序每次有差别，但是可以保证遍历出来的结果顺序是一样的</p>
+</blockquote>
+</li>
+<li><p>Vector也是数组方式存储数据，和ArrayList一样数组元素数大于实际存储的数据，不同的是<strong>Vector支持线程安全</strong>，所以性能比ArrayList弱一些。</p>
+</li>
+</ul>
+<hr>
+<h3 id="如何实现数组和List之间的转换"><a href="#如何实现数组和List之间的转换" class="headerlink" title="如何实现数组和List之间的转换 "></a><a href="https://blog.csdn.net/qq_41097354/article/details/90403953" target="_blank" rel="noopener">如何实现数组和List之间的转换 </a></h3><ul>
+<li>List转为数组：调用list的<strong>toArray()</strong>方法</li>
+<li>数组转为List：调用Arrays的<strong>asList</strong>方法    </li>
+<li><a href="https://www.cnblogs.com/Luouy/p/6482733.html" target="_blank" rel="noopener">List合并</a></li>
+</ul>
+<hr>
+<h3 id="迭代器Iterator"><a href="#迭代器Iterator" class="headerlink" title="迭代器Iterator"></a>迭代器Iterator</h3><ul>
+<li>什么是Iterator<ul>
+<li>迭代器是一种设计模式，它是一个对象，它可以<strong>遍历并选择序列中的对象</strong>，而开发人员不需要了解该序列的底层结构。迭代器通常被称为“<strong>轻量级</strong>”对象，因为创建它的代价小。</li>
+</ul>
+</li>
+<li>如何使用？有何特点？<ul>
+<li>Java中的Iterator功能比较简单，并且<strong>只能单向</strong></li>
+<li><em>lk–9移动*</em>：</li>
+<li>(1) 使用方法iterator()要求容器返回一个Iterator。<strong>第一次调用Iterator的next()方法时，它返回序列的第一个元素</strong>。注意：iterator()方法是java.lang.Iterable接口,被Collection继承。</li>
+<li>(2) <strong>使用next()获得序列中的下一个元素。</strong></li>
+<li>(3) <strong>使用hasNext()检查序列中是否还有元素。</strong></li>
+<li>(4) 使用remove()将迭代器<strong>新返回的元素删除</strong>。　</li>
+</ul>
+</li>
+<li>Iterator和ListIterator的区别<ul>
+<li>Iterator可用来<strong>遍历Set和List集合</strong>，但是<strong>ListIterator只能用来遍历List</strong></li>
+<li>Iterator对集合只能是向前遍历，ListIterator<strong>既可以前向也可以后向。</strong></li>
+</ul>
+</li>
+<li>ListIterator实现了Iterator接口，<strong>并包含其他的功能</strong>，比如：<strong>增加元素</strong>，<strong>替换元素</strong>，<strong>获取前一个和后一个元素的索引</strong>，等等。</li>
+</ul>
+<pre class=" language-java"><code class="language-java">        ArrayList<span class="token operator">&lt;</span>Student<span class="token operator">></span> arrays<span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        arrays<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token string">"wang"</span><span class="token punctuation">,</span><span class="token number">21</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        arrays<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token string">"li"</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Iterator<span class="token operator">&lt;</span>Student<span class="token operator">></span> iterator<span class="token operator">=</span>arrays<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span>iterator<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>iterator<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span></code></pre>
+<h3 id="Iterator和Enumeration"><a href="#Iterator和Enumeration" class="headerlink" title="Iterator和Enumeration"></a>Iterator和Enumeration</h3><ul>
+<li>Iterator除了能读取集合的数据之外，也能数据进行删除操作；而<strong>Enumeration只能读取集合的数据，而不能对数据进行修改</strong>。</li>
+<li>Iterator是基于Enumeration实现的，同时Iterator支持fail-fast机制，所以<strong>Iterator遍历集合时会比Enumeration遍历集合慢一些</strong>。</li>
+</ul>
+<hr>
+<blockquote>
+<p>参考：<a href="https://blog.csdn.net/fangchao2011/article/details/89184615" target="_blank" rel="noopener">https://blog.csdn.net/fangchao2011/article/details/89184615</a></p>
+</blockquote>
+
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2020-04-30 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2020-05-18
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/6ea65bec.html" title="JavaSE容器" target="_blank">JavaSE容器</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/6ea65bec.html" title="JavaSE容器" target="_blank">https://notecc.ink/posts/6ea65bec.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/6ea65bec.html" data-id="cks5dy1g800430w7tgf1ac9t3" class="article-share-link">
+                Compartir
+            </a>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaSE/" rel="tag">JavaSE</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/e930d1ea.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            JavaSE线程
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/dc174266.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">JavaSE基础</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>

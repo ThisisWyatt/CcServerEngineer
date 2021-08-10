@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    JavaSE基础 |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-code/JavaSE/JavaSE基础" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      JavaSE基础
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">2.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">10 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/dc174266.html" class="article-date">
+  <time datetime="2020-04-29T11:38:10.000Z" itemprop="datePublished">2020-04-29</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+  <div class="article-gallery">
+    <div class="article-gallery-photos">
+      
+        
+          <img src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/img/121212java.jpg" itemprop="image">
+        
+      
+    </div>
+  </div>
+
+
+            
+            <p>❄</p>
+<a id="more"></a>
+
+<h3 id="JDK和JRE的区别"><a href="#JDK和JRE的区别" class="headerlink" title="JDK和JRE的区别"></a>JDK和JRE的区别</h3><ul>
+<li>JDK:Java开发工具包，提供了Java的<strong>开发环境</strong>和<strong>运行环境</strong></li>
+<li>JRE:Java运行环境，提供Java的<strong>运行环境</strong></li>
+<li><strong>JDK包含了JRE,还包含了java源码的编译器javac，以及很多java程序调试分析的工具</strong>，如果只需要运行程序，JRE即可，如果还需要写程序则需要JDK <br></li>
+</ul>
+<hr>
+<h3 id="Java8新特性"><a href="#Java8新特性" class="headerlink" title="Java8新特性"></a>Java8新特性</h3><ul>
+<li>Date Time API :加强对日期和时间的处理</li>
+<li>Optional类：用来处理空指针的问题</li>
+<li>Lambda表达式</li>
+<li>优化HashMap,当链表中的节点数据超过八个之后,该链表会转为红黑树来提高查询效率,从原来的O(n)到O(logn)</li>
+</ul>
+<hr>
+<h3 id="Java的多态"><a href="#Java的多态" class="headerlink" title="Java的多态"></a>Java的多态</h3><ul>
+<li>多态：一种事物的多种存在形态，比如说男人和女人都是人，人可以分为男人和女人</li>
+<li>好处：消除了类之间的<strong>耦合关系</strong>，大大提高了程序的<strong>简洁性</strong>和<strong>可拓展性</strong></li>
+<li>重写Overriding和重载Overloading<ul>
+<li>重载：以类统一的方式处理不同数据的一种手段，实质就是<strong>多个具有不同参数个数或者类型的同名函数，且返回类型可随意。</strong>（<em>动态绑定</em>）</li>
+<li>重写：父类与子类之间的多态性，<strong>实质就是子类对父类的函数进行重写定义</strong>。子类的访问权限不能小于父类的访问权限。（否则调用的时候可能无法调用）（<em>静态绑定</em>）<ul>
+<li>重写方法<strong>参数列表、返回类型</strong>必须与被重写的方法相同。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>子类对象的多态性<ul>
+<li>是<strong>使用父类的引用，指向子类的对象</strong>，然后虚拟方法调用子类重写父类的方法</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="数据类型-自动拆装箱"><a href="#数据类型-自动拆装箱" class="headerlink" title="数据类型 自动拆装箱"></a>数据类型 自动拆装箱</h3><ul>
+<li>8种，<strong>int long short char float double byte boolean</strong></li>
+<li><strong>自动装箱是Java编译器在基本数据类型和对于对象包装类型中做的一个转化</strong>。比如int类型转化为Integer,double类型转为Double等，反之及时自动拆箱。</li>
+</ul>
+<hr>
+<h3 id="Java中IO流分为几种"><a href="#Java中IO流分为几种" class="headerlink" title="Java中IO流分为几种"></a>Java中IO流分为几种</h3><ul>
+<li>按照功能：<strong>输入流</strong>、<strong>输出流</strong></li>
+<li>按照类型:<ul>
+<li><strong>字节流</strong>：按<strong>8位传输以字节为单位</strong>输出输出数据</li>
+<li><strong>字符流</strong>：按照<strong>16位传输以字符为单位</strong>输出输入数据</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="值传递和引用传递"><a href="#值传递和引用传递" class="headerlink" title="值传递和引用传递"></a>值传递和引用传递</h3><ul>
+<li>值传递对于基本类型而言的，传递的是该变量的一个副本，改变副本不影响原变量</li>
+<li>引用传递对于对象类型而言的，传递的是该对象地址的一个副本，并不是原对象本身，所以对引用对象操作会改变原对象。</li>
+<li>一个对象被当做参数传递给一个方法后，此方法可改变它的属性，并返回变化后的结果，那么这里是什么传递？<ul>
+<li>值传递。<strong>Java没有引用传递</strong>，方法的参数的值是对象引用（传入的变量）的一个副本，但指向同一个对象，所以在方法中改变对象也会改变原变量的值，因为他的引用的对象改变了。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="amp-和-amp-amp-的区别"><a href="#amp-和-amp-amp-的区别" class="headerlink" title="&amp;和&amp;&amp;的区别"></a>&amp;和&amp;&amp;的区别</h3><ul>
+<li><p>&amp;：按位于，<strong>两边都要判断</strong></p>
+</li>
+<li><p>&amp;&amp;：短路与，<strong>左边的为true才会判断右边</strong></p>
+</li>
+<li><p>经常使用短路与，比如用户登陆时判定用户名不是null且不是空字符串时就只能用&amp;&amp;</p>
+<pre class=" language-java"><code class="language-java">  username<span class="token operator">!=</span>null<span class="token operator">&amp;&amp;</span>username<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span></code></pre>
+</li>
+</ul>
+<hr>
+<h3 id="String、StringBuffer和StringBuilder"><a href="#String、StringBuffer和StringBuilder" class="headerlink" title="String、StringBuffer和StringBuilder"></a>String、StringBuffer和StringBuilder</h3><ul>
+<li>都是可以储存和操作字符串</li>
+<li><strong>String是final类型</strong>，每次声明的都是不可变更的对象，然后将指针指向新的String对象</li>
+<li>StringBuffer，StringBuilder是可变字符继承自AbstractStringBuilder，在原有对象上进行操作</li>
+<li><strong>StringBuffer是线程安全的，StringBuilder不是线程安全的</strong>，但性能更高</li>
+<li>使用场景：<ul>
+<li><strong>并发</strong>必选StringBuffer</li>
+<li><strong>迭代</strong>必选StringBuilder</li>
+<li>普通场景使用String，避免不必要的类型转换开销</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>Object若不重写hashCode()的话，hashCode()如何计算出来的？<ul>
+<li>Object的hashCode()方法是一个本地方法，<strong>该方法是直接返回对象的内存地址</strong></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="equals和hashcode"><a href="#equals和hashcode" class="headerlink" title="equals和hashcode"></a>equals和hashcode</h3><ul>
+<li>如果两个对象的引用相同，他们之前互相调用equals()为true即两个对象相同。如果不重写hashCode（）方法，系统默认的hashCode()是本地计算对象的内存地址（经哈希算法），此时不会相同。就会产生矛盾。<blockquote>
+<p>两个对象equals相等，则它们的hashcode必须相等，反之则不一定。<br><br>两个对象=相等，则其hashcode一定相等，反之亦然。<br><br>两个对象==相等，则其hashcode一定相等，反之不一定成立。 //有可能是Integer对象比较之类的<br><br>两个对象==相等，则其hashcode一定相等，反之不一定成立。<br></p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h3 id="和equals的区别"><a href="#和equals的区别" class="headerlink" title="==和equals的区别"></a>==和equals的区别</h3><ul>
+<li>==<ul>
+<li><strong>基本类型：比较值是否相同</strong></li>
+<li><strong>引用类型：比较的引用是否相同</strong></li>
+</ul>
+</li>
+<li><strong>equals默认情况下是引用比较</strong>，只是<strong>很多类重载了equals()方法 (也可自定义)</strong> ，<strong>比如String、Integer等将它变为值比较</strong></li>
+</ul>
+<hr>
+<h3 id="final和static"><a href="#final和static" class="headerlink" title="final和static"></a>final和static</h3><ul>
+<li><p>final</p>
+<ul>
+<li>final可以修饰属性，<strong>方法，类，局部变量</strong>（静态变量、实例变量和局部变量）；</li>
+<li>final修饰的方法<strong>不能被子类重写</strong>，但<strong>可以被继承</strong>；</li>
+<li>final修饰的类<strong>不能被继承</strong>，没有子类，<strong>final类中的方法默认是final的</strong></li>
+<li>final<strong>不能</strong>用于修饰构造方法；</li>
+<li>对于基本类型数据，<strong>final会将值变为一个常数（创建后不能被修改）</strong></li>
+</ul>
+</li>
+<li><p>staic</p>
+<ul>
+<li>static表示“全局”或者“静态”的意思，可以用来修饰：属性，方法，代码段，内部类（静态内部类或嵌套内部类），static<strong>不可以修饰局部变量</strong></li>
+<li>static修饰的属性的初始化在编译期（类加载的时候），初始化后能改变，并且每个对象都只有一个值，主要强调它们只有一个。</li>
+<li>static修饰的属性、方法、代码段跟该类的<strong>具体对象无关</strong>，不创建对象也能调用static修饰的属性、方法等，</li>
+<li>static和“this、super”势不两立，因为this、super正好跟具体对象有关。也就是说，它不依赖类特定的实例，被类的所有实例共享。只要这个类被加载，Java虚拟机就能根据类名在运行时数据区的方法区内定找到他们。因此，static对象可以在它的任何对象创建之前访问，无需引用任何对象。</li>
+<li>用public修饰的static属性和方法本质是全局变量和全局方法，当声明它类的对象时，不生成static变量的副本，而是类的所有实例共享同一个static变量。</li>
+</ul>
+</li>
+<li><p>static final(等价于final staic)</p>
+<ul>
+<li>static修饰的属性强调它们只有一个，final修饰的属性表明是一个常数（创建后不能被修改）。static final修饰的属性表示一旦给值，就不可修改，并且可以通过类名访问。static final也可以修饰方法，表示该方法不能重写，可以在不new对象的情况下调用</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="静态代码块与普通代码块的区别"><a href="#静态代码块与普通代码块的区别" class="headerlink" title="静态代码块与普通代码块的区别"></a>静态代码块与普通代码块的区别</h3><ul>
+<li><pre class=" language-java"><code class="language-java">  <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HelloB</span> <span class="token keyword">extends</span> <span class="token class-name">HelloA</span> 
+  <span class="token punctuation">{</span>
+      <span class="token keyword">public</span> <span class="token function">HelloB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token punctuation">{</span>
+          System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"I’m B class"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">static</span><span class="token punctuation">{</span>
+          System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"static B"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>
+          <span class="token keyword">new</span> <span class="token class-name">HelloB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">class</span> <span class="token class-name">HelloA</span>
+  <span class="token punctuation">{</span>
+      <span class="token keyword">public</span> <span class="token function">HelloA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token punctuation">{</span>
+          System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"I’m A class"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">static</span><span class="token punctuation">{</span>
+          System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"static A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">//输出结果</span>
+  <span class="token keyword">static</span> A
+  <span class="token keyword">static</span> B
+  I’m A <span class="token keyword">class</span>
+  <span class="token class-name">I</span>’m B <span class="token keyword">class</span></code></pre>
+<ul>
+<li><p>执行顺序：</p>
+<ol>
+<li>父类静态代码块</li>
+<li>子类静态代码块</li>
+<li>父类普通代码块</li>
+<li>父类构造方法</li>
+<li>子类普通代码块</li>
+<li>子类构造方法</li>
+</ol>
+</li>
+<li><p>相同点</p>
+<ul>
+<li>都是在JVM加载类时且<strong>在构造方法执行之前执行</strong>，在类中都可以定义多个，一般在代码块中对一些static变量进行赋值。</li>
+</ul>
+</li>
+<li><p>不同点</p>
+<ul>
+<li>静态代码块在非静态代码块之前执行(<strong>静态代码块—&gt;非静态代码块—&gt;构造方法</strong>)。<strong>静态代码块只在第一次new执行一次，之后不再执行，而非静态代码块在每new一次就执行一次</strong>。非静态代码块可在普通方法中定义(不过作用不大)；而<strong>静态</strong>代码块不行。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="接口和抽象类有什么区别"><a href="#接口和抽象类有什么区别" class="headerlink" title="接口和抽象类有什么区别"></a>接口和抽象类有什么区别</h3><ul>
+<li>实现：抽象类的子类使用 <strong>extends</strong> 来继承；接口必须使用 <strong>implements</strong> 来实现接口。</li>
+<li>构造函数：抽象类可以有构造函数；<strong>接口不能有</strong>。</li>
+<li>main 方法：抽象类可以有 main 方法，并且我们能运行它；<strong>接口不能有 main 方法</strong>。</li>
+<li>实现数量：<strong>类可以实现很多个接口</strong>；但是<strong>只能继承一个抽象类</strong>。</li>
+<li>访问<strong>修饰符</strong>：接口中的方法默认使用 public 修饰；抽象类中的方法可以是任意访问修饰符。</li>
+</ul>
+<hr>
+<h3 id="String-a-”i”-和String-b-new-String-“i”-的区别"><a href="#String-a-”i”-和String-b-new-String-“i”-的区别" class="headerlink" title="String a=”i” 和String b=new String(“i”)的区别"></a>String a=”i” 和String b=new String(“i”)的区别</h3><ul>
+<li>前者，Java虚拟机将其分配到<strong>常量池</strong>中,并把”i”的内存地址赋给a,如果还有一个String a1=”i”,也把”i”的内存地址赋给a1，即<strong>a和a1这两个引用的是同一个地址，共享一个内存。</strong></li>
+<li>后者，则会被分配到<strong>堆内存</strong>中，即新创建了一个对象，如果还有一个String b1=new String(“i”)，相当于又创建了一个对象，然后将其地址赋给b1，<strong>虽然b和b1值相同，但是并不是一个对象。</strong></li>
+</ul>
+<hr>
+<h3 id="String类的常用方法有哪些"><a href="#String类的常用方法有哪些" class="headerlink" title="String类的常用方法有哪些"></a>String类的常用方法有哪些</h3><ul>
+<li><code>indexof()</code>   ：放回指定字符索引</li>
+<li><code>charAt()</code>    ：返回指定索引处字符</li>
+<li><code>replace()</code>   ：字符串替换</li>
+<li><code>trim()</code>      :去除字符串两端空白</li>
+<li><code>spilt()</code>     ：分割字符串，返回一个分割后的字符串数组</li>
+<li><code>getBytes()</code>  ：返回字符串的 byte 类型数组。ASCII码</li>
+<li><code>length()</code>    ：返回字符串长度。</li>
+<li><code>toLowerCase()</code>：将字符串转成小写字母。</li>
+<li><code>toUpperCase()</code>：将字符串转成大写字符。</li>
+<li>substring()   ：截取字符串。</li>
+<li>equals()      ：字符串比较。</li>
+</ul>
+<hr>
+<h3 id="Files的常用方法"><a href="#Files的常用方法" class="headerlink" title="Files的常用方法"></a>Files的常用方法</h3><ul>
+<li><code>Files.exists()</code>      ：    检测文件路径是否存在。</li>
+<li><code>Files.createFile()</code>  ：创建文件。</li>
+<li><code>Files.createDirectory()</code>：创建文件夹。</li>
+<li><code>Files.delete()</code>      ：删除一个文件或目录。</li>
+<li><code>Files.copy()</code>        ：复制文件。</li>
+<li><code>Files.move()</code>        ：移动文件。</li>
+<li><code>Files.size()</code>        ：查看文件个数。</li>
+<li><code>Files.read()</code>        ：读取文件。</li>
+<li><code>Files.write()</code>       ：写入文件。</li>
+</ul>
+<hr>
+<h3 id="java创建对象的方法"><a href="#java创建对象的方法" class="headerlink" title="java创建对象的方法"></a>java创建对象的方法</h3><ol>
+<li>用new语句创建对象，是最常见的创建对象的方法。</li>
+<li>运用反射手段,调用java.lang.Class或者java.lang.reflect.Constructor类的newInstance()实例方法。</li>
+<li>调用对象的clone()方法。</li>
+<li>运用反序列化手段，调用java.io.ObjectInputStream对象的 readObject()方法。</li>
+</ol>
+<hr>
+<h3 id="assert"><a href="#assert" class="headerlink" title="assert"></a>assert</h3><ul>
+<li>断言。是在软件开发过程中的一种调试方法。它对一个boolean表达式进行检验。一个正确的程序必须保证这个表达式正确，如果不正确系统则会给出警告或者退出。一般来说，<strong>asset用于保证程序最基本，最关键代码的正确性</strong>。软件发布后，通常assert检查通常是关闭的。</li>
+<li></li>
+</ul>
+<hr>
+<h3 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h3><ul>
+<li>抽象类不一定要有抽象方法</li>
+<li>抽象类不能使用final,因为被final标记的类不能被继承，但抽象类就是为了让其子类继承的</li>
+<li>抽象类和普通类的区别<ul>
+<li><strong>抽象类不能实例化</strong>，普通类可以    绝不会拿3e</li>
+<li><strong>普通类不能含有抽象方法</strong>，抽象类可以有抽象方法</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="lambda-表达式"><a href="#lambda-表达式" class="headerlink" title="lambda 表达式"></a>lambda 表达式</h3><pre><code>* 示例：
+    ```java
+    // 1. 不需要参数,返回值为 5  
+    () -&gt; 5  
+
+    // 2. 接收一个参数(数字类型),返回其2倍的值  
+    x -&gt; 2 * x  
+
+    // 3. 接受2个参数(数字),并返回他们的差值  
+    (x, y) -&gt; x – y  
+
+    // 4. 接收2个int型整数,返回他们的和  
+    (int x, int y) -&gt; x + y  
+
+    // 5. 接受一个 string 对象,并在控制台打印,不返回任何值(看起来像是返回void)  
+    (String s) -&gt; System.out.print(s)
+    ```</code></pre><hr>
+<blockquote>
+<p>参考：<a href="https://mp.weixin.qq.com/s/0KM4e3_zPczHh2TH2r_ncA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/0KM4e3_zPczHh2TH2r_ncA</a></p>
+</blockquote>
+
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2020-04-29 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2020-07-07
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/dc174266.html" title="JavaSE基础" target="_blank">JavaSE基础</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/dc174266.html" title="JavaSE基础" target="_blank">https://notecc.ink/posts/dc174266.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/dc174266.html" data-id="cks5dy1g900460w7td20t3ace" class="article-share-link">
+                Compartir
+            </a>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaSE/" rel="tag">JavaSE</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/6ea65bec.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            JavaSE容器
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/7de3426c.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">vim命令</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>

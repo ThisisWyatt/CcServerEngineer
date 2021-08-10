@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Spring Data Jpa设置联合主键 |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-code/JavaWeb/Spring Data Jpa设置联合主键" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      Spring Data Jpa设置联合主键
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">1.2k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">5 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/b988190.html" class="article-date">
+  <time datetime="2021-08-09T10:06:58.827Z" itemprop="datePublished">2021-08-09</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+
+            
+            <p>对于三种比较常见的SpringBoot持久层框架中，作者最喜欢的Spring Data Jpa,因为相比于Hibernate和MyBatis，它更符合ORM的理念，更多的使用注解来实现各种持久化操作，简单易上手，而且也不需要写很多的相关文件，有点Spring和SpringBoot之间那么点意思，当然对于一些复杂CAUD场景可能会有不太方便的地方，但是对于需要快速开发的小项目时，它显得极为合适。<br><br>言归正传，前几天在快速搭建的一个日志分析系统，最后对数据表进行重构的时候，需要设置联合主键，遇到了一些问题，最后发现<strong>并只不是在实体类的属性中添加多个<code>@Id</code></strong>,所以在此记下：</p>
+<a id="more"></a>
+
+<h2 id="两种实现方法"><a href="#两种实现方法" class="headerlink" title="两种实现方法"></a>两种实现方法</h2><h3 id="1-IdClass-Id"><a href="#1-IdClass-Id" class="headerlink" title="1.@IdClass + @Id"></a>1.@IdClass + @Id</h3><h4 id="1-1联合主键类"><a href="#1-1联合主键类" class="headerlink" title="1.1联合主键类"></a>1.1联合主键类</h4><ul>
+<li><p>首先依照以下规则写一个<strong>包含实体类所有组成联合主键的字段</strong>的联合主键类，</p>
+<ul>
+<li><p>继承Serializable接口进行序列化</p>
+</li>
+<li><p>重写hashCode()和equals()方法</p>
+</li>
+<li><p>有一个无参构造函数</p>
+<pre class=" language-java"><code class="language-java">  <span class="token comment" spellcheck="true">/**
+  * Description 联合主键类
+  * Author Cloudr 
+  * Date 2020/4/26 22:50
+  **/</span>
+  <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PhoneMultiKeys</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">{</span>
+
+      <span class="token keyword">private</span> String band<span class="token punctuation">;</span>
+      <span class="token keyword">private</span> String series<span class="token punctuation">;</span>
+      <span class="token keyword">private</span> <span class="token keyword">int</span> size<span class="token punctuation">;</span>
+
+      <span class="token keyword">public</span> <span class="token function">PhoneMultiKeys</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token function">PhoneMultiKeys</span><span class="token punctuation">(</span>String band<span class="token punctuation">,</span> String series<span class="token punctuation">,</span> <span class="token keyword">int</span> size<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>band <span class="token operator">=</span> band<span class="token punctuation">;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>series <span class="token operator">=</span> series<span class="token punctuation">;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>size <span class="token operator">=</span> size<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> size<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setSize</span><span class="token punctuation">(</span><span class="token keyword">int</span> size<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>size <span class="token operator">=</span> size<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> String <span class="token function">getBand</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> band<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setBand</span><span class="token punctuation">(</span>String band<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>band <span class="token operator">=</span> band<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> String <span class="token function">getSeries</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> series<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setSeries</span><span class="token punctuation">(</span>String series<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>series <span class="token operator">=</span> series<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token annotation punctuation">@Override</span>
+      <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+          <span class="token keyword">int</span> code<span class="token operator">=</span><span class="token number">17</span><span class="token punctuation">;</span>
+          code<span class="token operator">=</span>code<span class="token operator">*</span><span class="token number">31</span><span class="token operator">+</span><span class="token punctuation">(</span>band<span class="token operator">!=</span>null<span class="token operator">?</span>band<span class="token punctuation">.</span><span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          code<span class="token operator">=</span>code<span class="token operator">*</span><span class="token number">31</span><span class="token operator">+</span><span class="token punctuation">(</span>series<span class="token operator">!=</span>null<span class="token operator">?</span>series<span class="token punctuation">.</span><span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          code<span class="token operator">=</span>code<span class="token operator">*</span><span class="token number">31</span><span class="token operator">+</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>size<span class="token punctuation">;</span>
+          <span class="token keyword">return</span> code<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token annotation punctuation">@Override</span>
+      <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">equals</span><span class="token punctuation">(</span>Object object<span class="token punctuation">)</span><span class="token punctuation">{</span>
+          <span class="token keyword">if</span><span class="token punctuation">(</span>object<span class="token operator">==</span>null<span class="token punctuation">)</span>
+              <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>object <span class="token keyword">instanceof</span> <span class="token class-name">PhoneMultiKeys</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+              <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+          PhoneMultiKeys obj<span class="token operator">=</span><span class="token punctuation">(</span>PhoneMultiKeys<span class="token punctuation">)</span>object<span class="token punctuation">;</span>
+          <span class="token keyword">if</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>band<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>band<span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span>obj<span class="token punctuation">.</span>series<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>series<span class="token punctuation">)</span><span class="token punctuation">)</span>
+              <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+          <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-2实体类"><a href="#1-2实体类" class="headerlink" title="1.2实体类"></a>1.2实体类</h4><ul>
+<li><p>如常编写实体类</p>
+<ul>
+<li><p>注意使用@IdClass,参数为对应的联合主键类</p>
+</li>
+<li><p>@Id注解正常使用</p>
+</li>
+<li><p>重写equals()和hashCode()</p>
+<pre class=" language-java"><code class="language-java">  <span class="token comment" spellcheck="true">/**
+  * Description 实体类
+  * Author Cloudr 
+  * Date 2020/4/26 22:49
+  **/</span>
+  <span class="token annotation punctuation">@Entity</span>
+  <span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"phoneTestFroMultiKeys"</span><span class="token punctuation">)</span>
+  <span class="token annotation punctuation">@IdClass</span><span class="token punctuation">(</span>PhoneMultiKeys<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+  <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Phone</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">{</span>
+      <span class="token annotation punctuation">@Id</span>
+      <span class="token keyword">private</span> String band<span class="token punctuation">;</span>
+      <span class="token annotation punctuation">@Id</span>
+      <span class="token keyword">private</span> String series<span class="token punctuation">;</span>
+      <span class="token annotation punctuation">@Id</span>
+      <span class="token keyword">private</span> <span class="token keyword">int</span> size<span class="token punctuation">;</span>
+      <span class="token keyword">private</span> String model<span class="token punctuation">;</span>
+
+      <span class="token keyword">public</span> <span class="token function">Phone</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token function">Phone</span><span class="token punctuation">(</span>String band<span class="token punctuation">,</span> String series<span class="token punctuation">,</span> String model<span class="token punctuation">,</span><span class="token keyword">int</span> size<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>band <span class="token operator">=</span> band<span class="token punctuation">;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>series <span class="token operator">=</span> series<span class="token punctuation">;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>model <span class="token operator">=</span> model<span class="token punctuation">;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>size<span class="token operator">=</span>size<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> String <span class="token function">getBand</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> band<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setBand</span><span class="token punctuation">(</span>String band<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>band <span class="token operator">=</span> band<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> String <span class="token function">getSeries</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> series<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setSeries</span><span class="token punctuation">(</span>String series<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>series <span class="token operator">=</span> series<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> String <span class="token function">getModel</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> model<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setModel</span><span class="token punctuation">(</span>String model<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>model <span class="token operator">=</span> model<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> size<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setSize</span><span class="token punctuation">(</span><span class="token keyword">int</span> size<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>size <span class="token operator">=</span> size<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token annotation punctuation">@Override</span>
+      <span class="token keyword">public</span> String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> <span class="token string">"Phone{"</span> <span class="token operator">+</span>
+                  <span class="token string">"band='"</span> <span class="token operator">+</span> band <span class="token operator">+</span> <span class="token string">'\''</span> <span class="token operator">+</span>
+                  <span class="token string">", series='"</span> <span class="token operator">+</span> series <span class="token operator">+</span> <span class="token string">'\''</span> <span class="token operator">+</span>
+                  <span class="token string">", size="</span> <span class="token operator">+</span> size <span class="token operator">+</span>
+                  <span class="token string">", model='"</span> <span class="token operator">+</span> model <span class="token operator">+</span> <span class="token string">'\''</span> <span class="token operator">+</span>
+                  <span class="token string">'}'</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-3测试"><a href="#1-3测试" class="headerlink" title="1.3测试"></a>1.3测试</h4><ul>
+<li><p>Dao层</p>
+<ul>
+<li><p>JpaRepository&lt;T,TD&gt; //TD类型测试过String、Integer、以及无关的Date和Object都可以，所以任何类型都可以？</p>
+<pre class=" language-java"><code class="language-java">  <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">PhoneDao</span> <span class="token keyword">extends</span> <span class="token class-name">JpaRepository</span><span class="token operator">&lt;</span>Phone<span class="token punctuation">,</span> Object<span class="token operator">></span> <span class="token punctuation">{</span> 
+
+      <span class="token keyword">public</span> Optional<span class="token operator">&lt;</span>Phone<span class="token operator">></span> <span class="token function">findByBandAndSeriesAndSize</span><span class="token punctuation">(</span>String band<span class="token punctuation">,</span> String series<span class="token punctuation">,</span> <span class="token keyword">int</span> size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token punctuation">}</span></code></pre>
+</li>
+</ul>
+</li>
+<li><p>Service层</p>
+<pre class=" language-java"><code class="language-java">  <span class="token annotation punctuation">@Service</span>
+  <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">PhoneService</span> <span class="token punctuation">{</span>
+
+      <span class="token keyword">void</span> <span class="token function">saveALl</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>Phone<span class="token operator">></span> phoneList<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token punctuation">}</span>
+
+  <span class="token annotation punctuation">@Service</span>
+  <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PhoneServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">PhoneService</span> <span class="token punctuation">{</span>
+
+      <span class="token annotation punctuation">@Resource</span>
+      <span class="token keyword">private</span> PhoneDao phoneDao<span class="token punctuation">;</span>
+
+      <span class="token annotation punctuation">@Override</span>
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">saveALl</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>Phone<span class="token operator">></span> phoneList<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          phoneDao<span class="token punctuation">.</span><span class="token function">saveAll</span><span class="token punctuation">(</span>phoneList<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> Optional<span class="token operator">&lt;</span>Phone<span class="token operator">></span> <span class="token function">findByBandAndSeriesAndSize</span><span class="token punctuation">(</span>String mi<span class="token punctuation">,</span> String mix<span class="token punctuation">,</span> <span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> phoneDao<span class="token punctuation">.</span><span class="token function">findByBandAndSeriesAndSize</span><span class="token punctuation">(</span>mi<span class="token punctuation">,</span>mix<span class="token punctuation">,</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span></code></pre>
+</li>
+<li><p>测试</p>
+<pre class=" language-java"><code class="language-java">      <span class="token comment" spellcheck="true">//SUCCEED</span>
+      <span class="token annotation punctuation">@Test</span>
+      <span class="token keyword">void</span> <span class="token function">TestSaveList</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          Book book1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Book</span><span class="token punctuation">(</span><span class="token string">"cc1"</span><span class="token punctuation">,</span> <span class="token string">"aa"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          Book book2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Book</span><span class="token punctuation">(</span><span class="token string">"cc2"</span><span class="token punctuation">,</span> <span class="token string">"aa"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          List<span class="token operator">&lt;</span>Book<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>book1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>book2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          bookService<span class="token punctuation">.</span><span class="token function">saveAll</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span></code></pre>
+</li>
+</ul>
+<h3 id="2-Embeddable-EmbedId"><a href="#2-Embeddable-EmbedId" class="headerlink" title="2.@Embeddable + @EmbedId"></a>2.@Embeddable + @EmbedId</h3><h4 id="2-1-联合主键类"><a href="#2-1-联合主键类" class="headerlink" title="2.1 联合主键类"></a>2.1 联合主键类</h4><ul>
+<li><p>加入@Embeddable</p>
+</li>
+<li><p>序列化</p>
+</li>
+<li><p>无参构造函数</p>
+<blockquote>
+<p><code>UserPK</code>是一种命名风格并不是协议</p>
+</blockquote>
+<pre class=" language-java"><code class="language-java">  <span class="token annotation punctuation">@Embeddable</span>
+  <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserPK</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span>  <span class="token punctuation">{</span>
+      <span class="token keyword">private</span> String userId<span class="token punctuation">;</span>
+      <span class="token keyword">private</span> String userName<span class="token punctuation">;</span>
+
+      <span class="token keyword">public</span> <span class="token function">UserPK</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token function">UserPK</span><span class="token punctuation">(</span>String userId<span class="token punctuation">,</span> String userName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>userId <span class="token operator">=</span> userId<span class="token punctuation">;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>userName <span class="token operator">=</span> userName<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> String <span class="token function">getUserId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> userId<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setUserId</span><span class="token punctuation">(</span>String userId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>userId <span class="token operator">=</span> userId<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> String <span class="token function">getUserName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> userName<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setUserName</span><span class="token punctuation">(</span>String userName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>userName <span class="token operator">=</span> userName<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token annotation punctuation">@Override</span>
+      <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">equals</span><span class="token punctuation">(</span>Object o<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token operator">==</span> o<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>o <span class="token operator">==</span> null <span class="token operator">||</span> <span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> o<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+          UserPK userPK <span class="token operator">=</span> <span class="token punctuation">(</span>UserPK<span class="token punctuation">)</span> o<span class="token punctuation">;</span>
+          <span class="token keyword">return</span> userId<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>userPK<span class="token punctuation">.</span>userId<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span>
+                  userName<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>userPK<span class="token punctuation">.</span>userName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token annotation punctuation">@Override</span>
+      <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> Objects<span class="token punctuation">.</span><span class="token function">hash</span><span class="token punctuation">(</span>userId<span class="token punctuation">,</span> userName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span></code></pre>
+<h4 id="2-2-实体类"><a href="#2-2-实体类" class="headerlink" title="2.2 实体类"></a>2.2 实体类</h4></li>
+<li><p>使用@EmbeddedId标注Id</p>
+</li>
+<li><p>Id类型为UserPK</p>
+<pre class=" language-java"><code class="language-java">  <span class="token annotation punctuation">@Entity</span>
+  <span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"user_test"</span><span class="token punctuation">)</span>
+  <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">{</span>
+      <span class="token annotation punctuation">@EmbeddedId</span>
+      <span class="token keyword">private</span> UserPK id<span class="token punctuation">;</span>
+      <span class="token keyword">private</span> String nickName<span class="token punctuation">;</span>
+
+      <span class="token keyword">public</span> <span class="token function">User</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token function">User</span><span class="token punctuation">(</span>UserPK id<span class="token punctuation">,</span> String nickName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> id<span class="token punctuation">;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>nickName <span class="token operator">=</span> nickName<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> UserPK <span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> id<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setId</span><span class="token punctuation">(</span>UserPK id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> id<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> String <span class="token function">getNickName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> nickName<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setNickName</span><span class="token punctuation">(</span>String nickName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>nickName <span class="token operator">=</span> nickName<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span></code></pre>
+</li>
+<li><p>Dao层</p>
+<ul>
+<li><p>JpaRepository&lt;T, TD&gt; //TD类型为联合主键类</p>
+<pre class=" language-java"><code class="language-java">  <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">UserRepository</span> <span class="token keyword">extends</span> <span class="token class-name">JpaRepository</span><span class="token operator">&lt;</span>User<span class="token punctuation">,</span> UserPK<span class="token operator">></span> <span class="token punctuation">{</span>
+
+  <span class="token punctuation">}</span></code></pre>
+<h4 id="2-3-测试"><a href="#2-3-测试" class="headerlink" title="2.3 测试"></a>2.3 测试</h4><pre class=" language-java"><code class="language-java"><span class="token annotation punctuation">@Resource</span>
+<span class="token keyword">private</span> UserRepository userDao<span class="token punctuation">;</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">TestUserWithMultiKeys</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  User user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">UserPK</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">,</span> <span class="token string">"Lou"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"cc"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  userDao<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"存储成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p>作者猜测Jpa之所以不能只在实体类中添加多个@Id实现联合主键是因为可能只靠注释可能在一些情况下不够准确，也可能底层没有做的特别完善，期待Jpa后续的更新。而在联合主键类中必须重写equals()和hashCode()以及都必须实现序列化都已在一定程度上印证了这一点。当然这些都是猜测，期望和各位的交流。</p>
+</li>
+<li><p>关于以上两种方法，<code>@Embeddable + @EmbedId</code>更符合面向对象的设计思想，将联合主键直接封装成一个类，<code>@IdClass + @Id</code>更直观，目前作者还不知道其中的具体差异。</p>
+</li>
+</ul>
+
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2021-08-09 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2020-10-06
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/b988190.html" title="Spring Data Jpa设置联合主键" target="_blank">Spring Data Jpa设置联合主键</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/b988190.html" title="Spring Data Jpa设置联合主键" target="_blank">https://notecc.ink/posts/b988190.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/b988190.html" data-id="cks5dy1gp005i0w7t98xm5aew" class="article-share-link">
+                Compartir
+            </a>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaWeb/" rel="tag">JavaWeb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ORM/" rel="tag">ORM</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/25912.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            SpringBoot基础
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/93780083.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">JavaWeb异常汇总</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>

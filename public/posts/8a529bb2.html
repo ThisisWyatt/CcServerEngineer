@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    基本类型转换 |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-code/JavaSE/类型转换" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      基本类型转换
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">386</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">2 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/8a529bb2.html" class="article-date">
+  <time datetime="2020-10-06T13:07:10.000Z" itemprop="datePublished">2020-10-06</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+
+            
+            <ul>
+<li>字符串与数值类型互转</li>
+<li>char和String互转</li>
+<li>其他类型互转</li>
+<li>英文字母与ASCII码数值范围</li>
+</ul>
+<br>
+<a id="more"></a>
+
+<h2 id="一、字符类转化为整型"><a href="#一、字符类转化为整型" class="headerlink" title="一、字符类转化为整型"></a>一、字符类转化为整型</h2><ul>
+<li><p>字符串转double：<br></p>
+<pre class=" language-java"><code class="language-java">string s <span class="token operator">=</span> <span class="token string">"124"</span><span class="token punctuation">;</span>    <span class="token keyword">double</span> x <span class="token operator">=</span> Double<span class="token punctuation">.</span><span class="token function">parseDouble</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</li>
+<li><p>字符串转float：<br></p>
+<pre class=" language-java"><code class="language-java">string s <span class="token operator">=</span> <span class="token string">"124"</span><span class="token punctuation">;</span>   <span class="token keyword">float</span> f <span class="token operator">=</span> Float<span class="token punctuation">.</span><span class="token function">parseFloat</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</li>
+<li><p>字符串转int：<br></p>
+<pre class=" language-java"><code class="language-java">string s <span class="token operator">=</span> <span class="token string">"124"</span><span class="token punctuation">;</span>   <span class="token keyword">int</span> i <span class="token operator">=</span> Float<span class="token punctuation">.</span><span class="token function">parseFloat</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</li>
+<li><p>字符串转short：<br></p>
+<pre class=" language-java"><code class="language-java">string s <span class="token operator">=</span> <span class="token string">"124"</span><span class="token punctuation">;</span>   <span class="token keyword">short</span> sh <span class="token operator">=</span> Short<span class="token punctuation">.</span><span class="token function">parseFloat</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</li>
+<li><p>字符串转long：<br></p>
+<pre class=" language-java"><code class="language-java">string s <span class="token operator">=</span> <span class="token string">"124"</span><span class="token punctuation">;</span>   <span class="token keyword">long</span> l <span class="token operator">=</span> Long<span class="token punctuation">.</span><span class="token function">parseLong</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</li>
+<li><p>字符串转byte：<br></p>
+<pre class=" language-java"><code class="language-java">string s <span class="token operator">=</span> <span class="token string">"124"</span><span class="token punctuation">;</span>   <span class="token keyword">byte</span> b <span class="token operator">=</span> Long<span class="token punctuation">.</span><span class="token function">parseByte</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</li>
+<li><p>字符串转char：<br></p>
+<pre class=" language-java"><code class="language-java">String s <span class="token operator">=</span> <span class="token string">"1"</span><span class="token punctuation">;</span>
+<span class="token keyword">char</span> c <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</li>
+<li><p>char转字符串</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">char</span> c <span class="token operator">=</span> <span class="token string">'a'</span><span class="token punctuation">;</span>
+String s <span class="token operator">=</span> String<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</li>
+<li><p>char</p>
+</li>
+</ul>
+<h2 id="二、数字类型转字符串"><a href="#二、数字类型转字符串" class="headerlink" title="二、数字类型转字符串"></a>二、数字类型转字符串</h2><pre class=" language-java"><code class="language-java"><span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">127</span><span class="token punctuation">;</span>
+String s <span class="token operator">=</span> String<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">double</span> d <span class="token operator">=</span> <span class="token number">127</span><span class="token punctuation">;</span>
+String s <span class="token operator">=</span> String<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+……
+
+<span class="token comment" spellcheck="true">/**
+    * Returns the string representation of the {@code Object} argument.
+    *
+    * @param   obj   an {@code Object}.
+    * @return  if the argument is {@code null}, then a string equal to
+    *          {@code "null"}; otherwise, the value of
+    *          {@code obj.toString()} is returned.
+    * @see     java.lang.Object#toString()
+    */</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">valueOf</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>obj <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token string">"null"</span> <span class="token operator">:</span> obj<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="三、其他类型转换"><a href="#三、其他类型转换" class="headerlink" title="三、其他类型转换"></a>三、其他类型转换</h2><h3 id="3-1-Double转其他类型"><a href="#3-1-Double转其他类型" class="headerlink" title="3.1 Double转其他类型"></a>3.1 Double转其他类型</h3><pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//其它类型同下</span>
+<span class="token keyword">public</span> <span class="token keyword">byte</span> <span class="token function">byteValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">)</span>value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">short</span> <span class="token function">shortValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token keyword">short</span><span class="token punctuation">)</span>value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">long</span> <span class="token function">longValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token keyword">long</span><span class="token punctuation">)</span>value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">float</span> <span class="token function">floatValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span>value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">double</span> <span class="token function">doubleValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//double 转 int</span>
+<span class="token keyword">double</span> d <span class="token operator">=</span> <span class="token number">127.0</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> i1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Double</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//取整</span>
+<span class="token keyword">int</span> i2 <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">ceil</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> i3 <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">floor</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> i2 <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3 id="3-2-数值类型转二进制"><a href="#3-2-数值类型转二进制" class="headerlink" title="3.2 数值类型转二进制"></a>3.2 数值类型转二进制</h3><pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//int类型</span>
+<span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">;</span>
+String s <span class="token operator">=</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//long类型</span>
+<span class="token keyword">long</span> l <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">;</span>
+String s <span class="token operator">=</span> Long<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//short类型</span>
+<span class="token keyword">short</span> s <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">;</span>
+String st <span class="token operator">=</span> Short<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3 id="3-3-char类型与数值转换"><a href="#3-3-char类型与数值转换" class="headerlink" title="3.3 char类型与数值转换"></a>3.3 char类型与数值转换</h3><pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//a~z 97~122</span>
+<span class="token comment" spellcheck="true">//A~Z 65~90</span>
+<span class="token keyword">char</span> c <span class="token operator">=</span> <span class="token number">97</span><span class="token punctuation">;</span>
+System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token string">'9'</span> <span class="token operator">-</span> <span class="token string">'0'</span><span class="token punctuation">;</span>
+System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2020-10-06 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2020-11-28
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/8a529bb2.html" title="基本类型转换" target="_blank">基本类型转换</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/8a529bb2.html" title="基本类型转换" target="_blank">https://notecc.ink/posts/8a529bb2.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/8a529bb2.html" data-id="cks5dy1gh004u0w7t1ct77zun" class="article-share-link">
+                Compartir
+            </a>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaSE/" rel="tag">JavaSE</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/161dcf21.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            生产者消费者模型
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/64f4f5cc.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">模板模式</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>

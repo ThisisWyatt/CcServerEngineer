@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="DO SOMETHING HAPPY">
+  
+  
+    <meta name="description" content="现在才是最好的">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Hibernate基础 |
+    
+    notecc</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-ghcolors.css" type="text/css"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-code/JavaWeb/Java Web框架" class="article article-type-post" itemscope
+    itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      Hibernate基础
+    </h1>
+  
+  
+
+
+
+
+
+            <!-- 开始添加字数统计-->
+            
+            <div style="margin-top:10px;">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="fa fa-keyboard-o"></i>
+            <span class="post-meta-item-text"> words count: </span>
+            <span class="post-count">3.1k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="fa fa-hourglass-half"></i>
+            <span class="post-meta-item-text"> expected cost: </span>
+            <span class="post-count">12 minutes </span>
+        </span>
+    </span>
+</div>
+            
+            <!-- 添加完成 -->
+
+        </header>
+        
+
+        
+        <div class="article-meta">
+            <a href="/posts/30225.html" class="article-date">
+  <time datetime="2021-08-09T10:06:58.816Z" itemprop="datePublished">2021-08-09</time>
+</a>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+        </div>
+        
+
+        
+        
+    <div class="tocbot"></div>
+
+
+
+
+
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+
+            
+
+            
+            <p>❄    </p>
+<a id="more"></a>
+
+<h3 id="Hibernate"><a href="#Hibernate" class="headerlink" title="Hibernate"></a>Hibernate</h3><h4 id="初识"><a href="#初识" class="headerlink" title="初识"></a>初识</h4><ul>
+<li><p>加载过程<br>  <img src="https://i.loli.net/2020/04/16/v7NnVpWlyCYFaJB.png" alt="加载过程"></p>
+</li>
+<li><p>Hibernate全局配置文件</p>
+<pre class=" language-xml"><code class="language-xml">      <span class="token prolog">&lt;?xml version="1.0" encoding="UTF-8"?></span>
+      <span class="token doctype">&lt;!DOCTYPE hibernate-configuration PUBLIC
+              "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+              "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>hibernate-configuration</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>session-factory</span><span class="token punctuation">></span></span>
+              <span class="token comment" spellcheck="true">&lt;!-- 设置数据库驱动 --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hibernate.connection.driver_class<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>com.mysql.jdbc.Driver<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+              <span class="token comment" spellcheck="true">&lt;!-- 设置数据库URL --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hibernate.connection.url<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>jdbc:mysql://localhost:3306/hibernate?useUnicode=true<span class="token entity" title="&amp;">&amp;amp;</span>characterEncoding=utf-8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+              <span class="token comment" spellcheck="true">&lt;!-- 数据库用户名 --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hibernate.connection.username<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>root<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+              <span class="token comment" spellcheck="true">&lt;!-- 数据库密码 --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hibernate.connection.password<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>369cc<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+              <span class="token comment" spellcheck="true">&lt;!-- 指定对应数据库的方言，hibernate为了更好适配各种关系数据库，针对每种数据库都指定了一个方言dialect --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hibernate.dialect<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>org.hibernate.dialect.MySQLDialect<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+              <span class="token comment" spellcheck="true">&lt;!--显示sql语句 --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hibernate.show_sql<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+              <span class="token comment" spellcheck="true">&lt;!--格式化sql语句 --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>format_sql<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+              <span class="token comment" spellcheck="true">&lt;!--自动生成表 --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hibernate.hbm2ddl.auto<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>update<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+              <span class="token comment" spellcheck="true">&lt;!-- 映射文件 --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>mapping</span> <span class="token attr-name">resource</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hbm/User.hbm.xml<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>mapping</span> <span class="token attr-name">resource</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hbm/Order1.hbm.xml<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>mapping</span> <span class="token attr-name">resource</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hbm/Customer.hbm.xml<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>session-factory</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>hibernate-configuration</span><span class="token punctuation">></span></span></code></pre>
+</li>
+<li><p>Hibernate映射文件</p>
+<pre class=" language-xml"><code class="language-xml">      <span class="token prolog">&lt;?xml version="1.0" encoding="utf-8"?></span>
+      <span class="token doctype">&lt;!DOCTYPE hibernate-mapping PUBLIC
+              "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+              "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>hibernate-mapping</span><span class="token punctuation">></span></span>
+          <span class="token comment" spellcheck="true">&lt;!-- class配置了对象和表的关系 --></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>class</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.smart.zero.domain.Order1<span class="token punctuation">"</span></span>
+              <span class="token attr-name">table</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>orders<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>  <span class="token comment" spellcheck="true">&lt;!-- id元素是用来配置主键字段和属性关系的   name:属性名   column:字段名   type:两者者之间转换时使用的类型   --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>id<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>integer<span class="token punctuation">"</span></span> <span class="token attr-name">column</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>oid<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>generator</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>native<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span class="token comment" spellcheck="true">&lt;!-- 用来指明主键生成方式 --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+              <span class="token comment" spellcheck="true">&lt;!-- property元素是用来配置普通字段和属性关系的 --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>address<span class="token punctuation">"</span></span> <span class="token attr-name">length</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>50<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>string<span class="token punctuation">"</span></span> <span class="token attr-name">column</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>address<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>price<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>double<span class="token punctuation">"</span></span> <span class="token attr-name">column</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>price<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+              <span class="token comment" spellcheck="true">&lt;!-- 配置映射 --></span>
+              <span class="token comment" spellcheck="true">&lt;!-- &lt;many-to-one>标签    name  :关联对象的属性的名称.    column :表中的外键名称.    class :关联对象类的全路径   --></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>many-to-one</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>customer<span class="token punctuation">"</span></span> <span class="token attr-name">column</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>cno<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.smart.zero.domain.Customer<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>class</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>hibernate-mapping</span><span class="token punctuation">></span></span>
+</code></pre>
+<br>
+<br>
+
+</li>
+</ul>
+<hr>
+<br>
+<br>
+
+<h4 id="Hibernate持久化对象的三种状态"><a href="#Hibernate持久化对象的三种状态" class="headerlink" title="Hibernate持久化对象的三种状态"></a>Hibernate持久化对象的三种状态</h4><ul>
+<li><p><img src="https://i.loli.net/2020/04/16/2W9I6hqOXo4mrla.png" alt="Hibernate持久化对象的三种状态"></p>
+<ul>
+<li><p>瞬时态</p>
+<blockquote>
+<p>由java的new命令开辟内存空间的java对象也就是普通的java对象，如果没有变量引用它它将会被JVM收回。<strong>临时对象在内存中是孤立存在的，它的意义是携带信息载体，不和数据库中的数据有任何的关联</strong>。通过Session的save（）方法和saveOrUpdate（）方法可以<strong>把一个临时对象和数据库相关联，并把临时对象携带的信息通过配置文件所做的映射插入数据库中</strong>，这个临时对象就成为持久化对象。</p>
+</blockquote>
+</li>
+<li><p>持久态</p>
+<blockquote>
+<p><strong>持久化对象在数据库中有相应的记录，持久化对象可以是刚被保存的，或者刚被加载的,但都是在相关联的session声明周期中保存这个状态</strong>。如果是直接数据库查询所返回的数据对象，则这些对象和数据库中的字段相关联，具有相同的id，它们马上变成持久化对象。如果一个临时对象被持久化对象引用，也立马变为持久化对象。</p>
+</blockquote>
+<blockquote>
+<p>如果使用delete（）方法，持久化对象变为临时对象，并且删除数据库中相应的记录，这个对象不再与数据库有任何的联系。</p>
+</blockquote>
+<blockquote>
+<p>持久化对象总是与Session和Transaction关联在一起，在一个session中，对持久化对象的操作不会立即写到数据库，只有当Transaction（事务）结束时，才真正的对数据库更新，从而完成持久化对象和数据库的同步。在同步之前的持久化对象成为脏对象。</p>
+</blockquote>
+<blockquote>
+<p>当一个session()执行close()、clear()、或evict()之后，持久化对象就变为离线对象，这时对象的id虽然拥有数据库的识别值，但已经不在Hibernate持久层的管理下，他和临时对象基本上一样的，<strong>只不过比临时对象多了数据库标识id</strong>。没有任何变量引用时，jvm将其回收。</p>
+</blockquote>
+</li>
+<li><p>游离态</p>
+<blockquote>
+<p><strong>Session关闭之后，与此Session关联的持久化对象就变成为脱管对象</strong>，可以继续对这个对象进行修改，如果脱管对象被重新关联到某个新的Session上，会在此转成持久对象。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p>脱管对象虽然拥有用户的标识id，所以通过update（）、saveOrUpdate（）等方法，再次与持久层关联。</p>
+<p>下面我们就通过使用hibernate，实现对数据库的增删改查来体现三种状态之间的转换过程。</p>
+<ul>
+<li>状态转换<ul>
+<li><img src="https://i.loli.net/2020/04/16/cJtdRTGMy2XsjOg.png" alt="图片.png"></li>
+</ul>
+</li>
+</ul>
+<br>
+<br>
+
+<hr>
+<br>
+<br>
+
+<h4 id="一级缓存"><a href="#一级缓存" class="headerlink" title="一级缓存"></a>一级缓存</h4><ul>
+<li><p><a href="https://www.cnblogs.com/QianYue111/p/9747723.html" target="_blank" rel="noopener">Hibernate一级缓存</a></p>
+</li>
+<li><p>缓存</p>
+<blockquote>
+<p>缓存介于应用程序和永久性数据存储源之间，其作用是<strong>降低应用程序直接读写永久性数据存储源的概率</strong>，从而<strong>提高应用程序的运行性能</strong>，缓存的物理介质通常是内存；</p>
+</blockquote>
+</li>
+<li><p>一级缓存</p>
+<blockquote>
+<p>hibernate的缓存分为一级和二级缓存，两者都位于持久化层,<strong>存储的都是数据库数据的备份</strong>，其中一级缓存为hibernate的内置缓存，不能卸载</p>
+</blockquote>
+<blockquote>
+<p>hibernate的一级缓存就是指session缓存，session缓存是一块存储空间用来存放相互管理的Java对象，在使用hibernate查询对象的时候，<strong>首先会使用对象属性的oid值在session缓存中查找，如果找到了就会直接从session中提取，不会再查询数据库如果没有找到匹配的，则回去数据库查询，并且把找到的数据存入session缓存中</strong>。一级缓存就是为了减少对熟虑库的访问次数。</p>
+</blockquote>
+<blockquote>
+<p>在Session 接口的实现中<strong>包含一系列的Java集合</strong>，这些Java集合构成了Sesion 缓存。只要Session实例没有结束生命周期，存放在它缓存中的对象也不会结束生命周期。固一级缓存也被称为是Session基本的缓存。</p>
+</blockquote>
+<ul>
+<li>Hibernate的一级缓存有如下特点:<ol>
+<li>当应用程序调用Session接口的save(）、update（）、 saveOrUpdate 时，如果Session缓存中没有相应的对象，Hibernate就会自动的把从数据库中查询到的相应对象信息加入到一级缓存中去。</li>
+<li>当调用Session接目的load()、get()方法， 以及Query接口的list()、iterator()方法时，会判断缓存中是否存在该对象，有则返回，不会查询数据库，如果缓存中没有要查询对象，再去数据库中查询对应对象，并添加到一级缓存中。</li>
+<li>如果调用了session的close()方法，则缓存会被清空</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>快照</p>
+<blockquote>
+<p>Hibemate向一级缓存放入数据时，<strong>同时复制一份数据放入到Hibernate快照中</strong>，当<strong>使用commit()方法提交事务时</strong>，同时会清理Session的一级缓存， 这时会<strong>使用oid判断一级缓存中的对象和快照中的对象是否一致，如果两个对象中的属性发生变化，则执行update语句，将缓存的内容同步到数据库，并更新快照:如果一致，则不执行update语句。</strong></p>
+</blockquote>
+<ul>
+<li>Hibermate快照的作用就是<strong>确保一级缓存中的数据和数据库中的数据一致</strong></li>
+<li>快照的根本作用是保证数据一致性，保证数据一致的另一种做法是，commit之前把堆内存中的数据直接与数据库中的对应记录进行对比，显而易见这样的效率是灰常低下的，而采用快照技术，因为快照是一定和数据库中记录一致的，快照也在堆内存中，所以<strong>速度不是一般的快</strong>。(如果没有变化的话,堆内存的数据于同在堆内存的快照比较的速度肯定要比堆内存的数据于数据库)</li>
+</ul>
+</li>
+<li><p>常见操作</p>
+<ul>
+<li><code>clear()</code>：<strong>清除session中的缓存数据</strong>（不管缓存与数据库的同步）。</li>
+<li><code>flush()</code>：<strong>将session的缓存中的数据与数据库同步</strong>。<blockquote>
+<p>执行完session.flush()时，并不意味着数据就肯定持久化到数据库中的，因为事务控制着数据库，如果事务提交失败了，缓存中的数据还是照样会被回滚的。</p>
+</blockquote>
+</li>
+<li><code>refresh()</code>：reflush操作会<strong>使数据库记录与session缓存记录保持一致</strong>，也就是是说会强制向数据库发送一条select语句。 </li>
+</ul>
+</li>
+</ul>
+<br>
+<br>
+
+<hr>
+<br>
+<br>
+
+<h4 id="hibernate控制反转"><a href="#hibernate控制反转" class="headerlink" title="hibernate控制反转"></a>hibernate控制反转</h4><ul>
+<li><p><a href="https://blog.csdn.net/u013488838/article/details/50068745" target="_blank" rel="noopener">hibernate控制反转</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_29331365/article/details/100151742?depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1&utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1" target="_blank" rel="noopener">inverse 控制反转</a></p>
+<blockquote>
+<p>何为控制反转, 比如 Poeple(人) 和 Address(地址)  :一个人可以拥有多个地址,那么在配置的时候 在Poeple.hbm,xml 中 设置 one-To-Many (先不考虑Address配置文件) 那么Ok 当我们向People对象 添加 新的地址时  调用代码 </p>
+</blockquote>
+<pre class=" language-java"><code class="language-java">      People p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">People</span><span class="token punctuation">(</span>“王三”<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      Address address <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Address</span><span class="token punctuation">(</span><span class="token string">"公司地址"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      p<span class="token punctuation">.</span><span class="token function">getAddress</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>address<span class="token punctuation">)</span> <span class="token punctuation">;</span>
+
+      <span class="token function">save</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token function">save</span><span class="token punctuation">(</span>address<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<blockquote>
+<p>当我们查看 控制台输出的语句会发现   <strong>有两个insert 语句 和一个 update 语句 显然这是非常消耗性能的</strong> ，正确的应该是 只有两个 insert<br>现在我们分析下 hibernate 的操作 先保存了People 之后 保存了 Address 最后又修改了 Address 的 关联的peopleId 外键属性 这是由于Address 的外键值是由Poeple来控制的<br>现在我们在People 的 配置文件中 加上 inverse=”true” 在执行上诉步骤 会发现 只有两条Insert 语句</p>
+</blockquote>
+</li>
+</ul>
+<br>
+
+<hr>
+<br>
+
+
+<h4 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h4><ul>
+<li><p>导航对象图检索</p>
+<ul>
+<li><p><strong>根据已加载的对象导航到其他对象</strong>。利用类与类之间的关系来检索对象。</p>
+<pre class=" language-java"><code class="language-java">  Order order<span class="token operator">=</span><span class="token punctuation">(</span>Order<span class="token punctuation">)</span>session<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Order<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Customer customer<span class="token operator">=</span>order<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Customer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>投影查询</p>
+<ul>
+<li>查询对象部分属性<pre class=" language-java"><code class="language-java">  String HQL<span class="token operator">=</span><span class="token string">"select u.name,u.password from User as u"</span><span class="token comment" spellcheck="true">//此时必须要select</span>
+  Query query<span class="token operator">=</span>session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>HQL<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  List<span class="token operator">&lt;</span>Object<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span> list<span class="token operator">=</span>query<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">//注意list存放的是Object数组</span></code></pre>
+</li>
+</ul>
+</li>
+<li><p>动态实例查询</p>
+<ul>
+<li><p>在投影查询时，返回的查询对象是一个对象数组，操作起来并不是很方便。所以将投影查询的返回结果重新组成一个实体的实例，这就是动态实例化查询。</p>
+<pre class=" language-java"><code class="language-java">  Strng HQL<span class="token operator">=</span><span class="token string">"selct new User(u.name,u.password) from User as u"</span><span class="token punctuation">;</span>
+  Query query<span class="token operator">=</span>session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>HQL<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  List<span class="token operator">&lt;</span>User<span class="token operator">></span> list<span class="token operator">=</span>query<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">//必须要有相应的构造方法</span>
+  <span class="token keyword">public</span> <span class="token function">User</span><span class="token punctuation">(</span>String name<span class="token punctuation">,</span>String password<span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token operator">=</span>name<span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>password<span class="token operator">=</span>password<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>条件查询</p>
+<ul>
+<li><p>使用<code>where,like</code>等</p>
+<ul>
+<li><p>按参数位置查询</p>
+<ul>
+<li><p><strong>使用 <code>?</code> 来定义参数的位置</strong>，然后利用Query对象的Setter方法为其赋值，类似于JDBC的PrepareStatement对象的参数绑定方法。</p>
+<pre class=" language-java"><code class="language-java">  String HQL<span class="token operator">=</span><span class="token string">"from User where name=? and id=?"</span><span class="token punctuation">;</span>
+  Query query<span class="token operator">=</span>session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>HQL<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  query<span class="token punctuation">.</span><span class="token function">setString</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token string">"JONE"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  query<span class="token punctuation">.</span><span class="token function">setInteger</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  User user<span class="token operator">=</span><span class="token punctuation">(</span>User<span class="token punctuation">)</span>query<span class="token punctuation">.</span><span class="token function">uniqueResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">////</span>
+
+  String HQL<span class="token operator">=</span><span class="token string">"form Uesr where name like ?"</span><span class="token punctuation">;</span>
+  Query query<span class="token operator">=</span>session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>HQL<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  query<span class="token punctuation">.</span><span class="token function">setString</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token string">"%o%"</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">//模糊查询</span>
+  List<span class="token operator">&lt;</span>User<span class="token operator">></span> list<span class="token operator">=</span>query<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>按参数名称查询</p>
+<ul>
+<li>在HQL中自定义<pre class=" language-java"><code class="language-java">   String HQL<span class="token operator">=</span><span class="token string">"form Uesr where name=:name and id=:id"</span><span class="token punctuation">;</span> 
+   Query query<span class="token operator">=</span>session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>HQL<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   query<span class="token punctuation">.</span><span class="token function">setParameter</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span><span class="token string">"Kity"</span><span class="token punctuation">)</span>
+   query<span class="token punctuation">.</span><span class="token function">setParameter</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span><span class="token string">"5"</span><span class="token punctuation">)</span>
+   List<span class="token operator">&lt;</span>User<span class="token operator">></span> list<span class="token operator">=</span>query<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>分页查询</p>
+<ul>
+<li><code>setFirstResult(int firstResult);</code> 设定查询位置</li>
+<li><code>setMaxResult(int maxReslut);</code> 设定插叙数目<pre class=" language-java"><code class="language-java">  String HQL<span class="token operator">=</span><span class="token string">"form Uesr"</span><span class="token punctuation">;</span> 
+  Query query<span class="token operator">=</span>session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>HQL<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  query<span class="token punctuation">.</span><span class="token function">setFirstResult</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//从第3条数据开始查询</span>
+  query<span class="token punctuation">.</span><span class="token function">setMaxResult</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//查询3条记录</span>
+  List<span class="token operator">&lt;</span>User<span class="token operator">></span> list<span class="token operator">=</span>query<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</li>
+</ul>
+</li>
+<li><p>报表查询</p>
+<pre class=" language-java"><code class="language-java">      String HQL<span class="token operator">=</span><span class="token string">"select u.gender,count(u) form Uesr as u group by u.gender"</span><span class="token punctuation">;</span> 
+      Query query<span class="token operator">=</span>session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>HQL<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      List<span class="token operator">&lt;</span>User<span class="token operator">></span> list<span class="token operator">=</span>query<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      Iterator iter<span class="token operator">=</span>list<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">while</span><span class="token punctuation">(</span>iter<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+          Object<span class="token punctuation">[</span><span class="token punctuation">]</span> objct<span class="token operator">=</span><span class="token punctuation">(</span>Object<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>iter<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          Sy
+      <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+<pre><code>```</code></pre><ul>
+<li>QBC查询<ul>
+<li>组合查询<ul>
+<li>通过Restrictions工具类的相应方法     <table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>    ```java
+        Criteria criteria=session.createCriteria(User.class);
+        criteria.add(Restrictions.and(Restrictions.eq(&quot;&quot;)))
+
+        ////
+
+        Criteria criteria=session.createCriteria(User.class);
+        Criterion criterion=Restrictions.or(Restrictions.eq(&quot;id&quot;,1),Restrictions.eq(&quot;name&quot;,&quot;Kitty&quot;));
+
+
+    ```
+* 分页查询
+    * `setFirstResult(int firstResult);` 
+    * `setMaxResult(int maxReslut);`
+
+    ```java
+        Criteria criteria=
+        criteria.setFirstResult(2);
+        criteria.setMaxResult(3);
+    ```</code></pre><h3 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h3><h4 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h4><ul>
+<li><p>以<strong>IOC(Inverse Of Control 控制反转)</strong> 和 <strong>AOP(Aspect Oriented Programming 面向切面)</strong> 为内核</p>
+</li>
+<li><p>三层</p>
+<ul>
+<li>表示层(web)</li>
+<li>业务逻辑(service)</li>
+<li>持久层(dao)</li>
+</ul>
+</li>
+<li><p>优点</p>
+<ul>
+<li>简化开发</li>
+<li>方便测试</li>
+<li>松耦合</li>
+<li>AOP编程的支持(权限拦截，任务监控)</li>
+<li>方便集成各种优秀框架</li>
+<li>降低JavaEE API的使用难度</li>
+</ul>
+</li>
+<li><p>Spring的体系结构</p>
+<ul>
+<li><p><img src="" alt=""></p>
+</li>
+<li><p>Core Container(核心容器)</p>
+<ul>
+<li>Beans 提供了BeanFactory</li>
+<li>Core</li>
+<li>Context 建立在core和Beans模块基础之上</li>
+<li>Expression Language 运行时查询和操作对象</li>
+</ul>
+</li>
+<li><p>Data Access/Integration(数据访问/集成)</p>
+<ul>
+<li>JDBC</li>
+<li>ORM</li>
+<li>OXM</li>
+<li>JMS:Java消息</li>
+<li>Transaction</li>
+</ul>
+</li>
+<li><p>Web模块</p>
+<ul>
+<li>web 提供基本的Web开发集成特性</li>
+<li>Servlet</li>
+<li>Struts</li>
+<li>Portlet</li>
+</ul>
+</li>
+<li><p>其他模块</p>
+<ul>
+<li>AOP</li>
+<li>Aspects</li>
+<li>Instrumentation</li>
+<li>Test 指出Spring组件，使用JUnit或者TestNG进行测试</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Spring的IOC容器</p>
+<ul>
+<li>Spring容器会负责程序之间的关系，而不是有程序代码直接控制，这样控制权由应用代码转移到外部容器，控制权发生了反转，这就是Spring的IOC(控制反转)思想<ul>
+<li>BeanFactory</li>
+<li>ApplicatonContext</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<br>
+<br>
+
+<hr>
+<br>
+<br>
+
+<h3 id="RESTful风格"><a href="#RESTful风格" class="headerlink" title="RESTful风格"></a>RESTful风格</h3><ul>
+<li><a href="https://www.jianshu.com/p/73d2415956bd" target="_blank" rel="noopener">RESTful风格</a></li>
+</ul>
+
+            
+            <!-- 《添加版权声明 -->
+            
+              <!-- 《添加版权声明 -->
+  <!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+  
+
+  <!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+  
+  <div class="declare">
+      <strong class="author">本文作者：</strong>
+      
+      Wyatt
+      
+      <br>
+      <!-- <strong class="create-time">发布时间：</strong>
+      2021-08-09 
+      <br> -->
+      <!-- <strong class="update-time">最后更新：</strong>
+      2020-10-06
+      <br> -->
+      <!-- <strong class="article-titles">本文标题：</strong>
+      <a href="https://notecc.ink/posts/30225.html" title="Hibernate基础" target="_blank">Hibernate基础</a>
+      <br> -->
+      <strong class="article-url">本文链接：</strong>
+      <a href="https://notecc.ink/posts/30225.html" title="Hibernate基础" target="_blank">https://notecc.ink/posts/30225.html</a>
+      <br>
+      <strong class="copyright">版权声明：</strong>
+      本作品采用
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+      许可协议进行许可。转载请注明出处。
+      
+      <br>
+      
+  </div>
+  
+  <!-- 添加版权声明》 -->
+            
+            <!-- 添加版权声明》 -->
+        </div>
+
+
+
+        <footer class="article-footer">
+            <a data-url="https://notecc.ink/posts/30225.html" data-id="cks5dy1gn005b0w7t4v6vdvt5" class="article-share-link">
+                Compartir
+            </a>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaWeb/" rel="tag">JavaWeb</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+    
+  <nav class="article-nav">
+    
+      <a href="/posts/93780083.html" class="article-nav-link">
+        <strong class="article-nav-caption">Nuevo</strong>
+        <div class="article-nav-title">
+          
+            JavaWeb异常汇总
+          
+        </div>
+      </a>
+    
+    
+      <a href="/posts/60908.html" class="article-nav-link">
+        <strong class="article-nav-caption">Viejo</strong>
+        <div class="article-nav-title">重写HashCode()</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+    
+    
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/cloud-r/GitakRepository/static_files/blog/gitalk.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ac06055f7c49938795a3',
+    clientSecret: '460a520458ca501d939291e4f049c621df50fe6c',
+    repo: 'GitakRepository',
+    owner: 'ThisisWyatt',
+    admin: ['ThisisWyatt'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+
+
+
+    
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2021 notecc</li>
+      <li>Construido por <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="notecc"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/links">Links</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Buscar">
+        <i class="fe fe-search"></i>
+        Buscar
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+</body>
+</html>
