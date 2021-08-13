@@ -92,6 +92,16 @@ Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来�
     * global session：与session类似，不过它仅仅只在基于Porlet的Web应用中才有效 
     > JSR 330标准中默认Bean的作用域**默认为singleton**
 
+* @ExceptionHandler 统一处理方法抛出的异常
+    ```java
+    //全局统一处理NumberFormatException异常
+    @ExceptionHandler(NumberFormatException.class) 
+    public void handleException(Exception e){
+        e.printStackTrace();
+        return;
+    }
+    ```
+
 ### 1.2 Spring Boot注解
 * @Value
     * 注入Spring Boot配置的文件application.properties中配置的属性值
